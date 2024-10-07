@@ -3,21 +3,34 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-import java.util.ArrayList;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.ktx.Firebase;
+
+
+import java.util.*;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
     EditText password;
     EditText confirmPassword;
     Button button;
+    FirebaseAuth auth;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
+    TextView textView;
 
 
     @Override
@@ -49,16 +66,15 @@ public class MainActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.editTextTextPassword);
         confirmPassword = (EditText) findViewById(R.id.editTextTextPassword2);
         button = (Button) findViewById(R.id.button);
+        auth = FirebaseAuth.getInstance();
+        database=FirebaseDatabase.getInstance();
+        databaseReference = database.getReference().child("users");
+        textView=findViewById(R.id.textView2);
 
 
 
 
-        button.setOnClickListener((View view)->{
-            if(validateFields()){
-                Intent welcomePageIntent = new Intent(MainActivity.this,WelcomePage.class);
-                startActivity(welcomePageIntent);
-            }
-        });
+
 
 
         createDropDown();
@@ -66,6 +82,37 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void createAccount(View v){
+        if(validateFields()){
+            Intent welcomePageIntent = new Intent(MainActivity.this,WelcomePage.class);
+            auth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                    .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                FirebaseUser user = auth.getCurrentUser();
+                                User user1 = new User(name.getText().toString(),userName.getText().toString(),email.getText().toString());
+                                Map<String,Object> map = user1.toMap();
+                                databaseReference.child(user.getUid()).setValue(map);
+
+                                startActivity(welcomePageIntent);
+                                //finish();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                String errorMessage = task.getException().getMessage();
+
+                                textView.setText(errorMessage);
+
+
+
+                            }
+                        }
+                    });
+
+        }
     }
 
 
@@ -101,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             email.setError("Email field can't be empty");
             allFieldsValid=false;
         }
-        else if (email.getText().toString().contains("@")){
+        else if (!email.getText().toString().contains("@")){
             email.setError("Must be a valid email");
             allFieldsValid=false;
         }
