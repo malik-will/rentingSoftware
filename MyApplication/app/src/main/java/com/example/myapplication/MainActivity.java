@@ -85,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createAccount(View v){
+        String namestr = name.getText().toString();
+        String uname = userName.getText().toString();
+        String email_str = email.getText().toString();
+
+        final User reg_user = new User(namestr, uname, email_str);
+
         if(validateFields()){
             Intent welcomePageIntent = new Intent(MainActivity.this,WelcomePage.class);
             auth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())

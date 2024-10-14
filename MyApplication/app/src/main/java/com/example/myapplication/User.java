@@ -24,4 +24,15 @@ public class User {
         return result;
     }
 
+    public String getName(){
+        return name;
+    }
+    public String getuserName(){
+        return userName;
+    }
+    public String getemail(){
+        return email;
+    }
+
+
 }
