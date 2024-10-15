@@ -9,11 +9,12 @@
 
     <TextView
         android:id="@+id/welcome"
-        android:layout_width="403dp"
-        android:layout_height="41dp"
+        android:layout_width="404dp"
+        android:layout_height="109dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="284dp"
-        android:textSize="20dp"
+        android:textSize="15dp"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.ktx.Firebase;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 
 import java.util.*;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference databaseReference;
     TextView textView, loginRedirectbtn;
+    private String selectedValue;
 
 
     @Override
@@ -84,7 +88,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        createDropDown();
+        //Creates dropdown menu allowing users to choose either lessor or rentor;
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,new String[]{"Lessor","Rentor"});
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> parent, View v, int position, long id){
+                selectedValue = parent.getItemAtPosition(position).toString();
+            }
+
+            public void onNothingSelected(AdapterView<?> parent){
+
+            }
+        });
 
 
 
@@ -92,11 +107,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createAccount(View v){
-        String namestr = name.getText().toString();
-        String uname = userName.getText().toString();
-        String email_str = email.getText().toString();
-
-        final User reg_user = new User(namestr, uname, email_str);
 
         if(validateFields()){
             Intent welcomePageIntent = new Intent(MainActivity.this,WelcomePage.class);
@@ -107,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = auth.getCurrentUser();
-                                User user1 = new User(name.getText().toString(),userName.getText().toString(),email.getText().toString());
+                                User user1 = new User(name.getText().toString(),userName.getText().toString(),email.getText().toString(), selectedValue);
                                 Map<String,Object> map = user1.toMap();
                                 databaseReference.child(user.getUid()).setValue(map);
 
@@ -131,11 +141,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //Creates dropdown menu allowing users to choose either lessor or rentor;
-    private void createDropDown(){
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,new String[]{"Lessor","Rentor"});
-        spinner.setAdapter(arrayAdapter);
-    }
+
 
 
 

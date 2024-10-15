@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
@@ -35,6 +36,7 @@ import com.google.firebase.ktx.Firebase;
 public class WelcomePage extends AppCompatActivity {
     private TextView nameView;
     private TextView roleView;
+    Spinner spinnerr;
 
     private FirebaseAuth myAuth;
     private FirebaseUser mUser;
@@ -51,37 +53,57 @@ public class WelcomePage extends AppCompatActivity {
             return insets;
         });
 
-        myAuth = FirebaseAuth.getInstance();
-        mUser = myAuth.getCurrentUser();
-        String userID = getIntent().getStringExtra(mUser.getUid());
-        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(userID);
-
-        nameView = (TextView) findViewById(R.id.welcome);
-        //roleView  = (TextView) findViewById(R.id.textView4);
-
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    String username = snapshot.child("name").getValue(String.class);
-                    displayWelcomeMessage(username);
+            myAuth=FirebaseAuth.getInstance();
+            mUser = myAuth.getCurrentUser();
+            nameView = findViewById(R.id.welcome);
+            mDatabase = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String names = snapshot.child("name").getValue(String.class);
+                    String roles = snapshot.child("role").getValue(String.class);
+                    nameView.setText("Welcome "+names+"! "+"You are logged in as a " + roles+".");
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                startActivity(new Intent(WelcomePage.this, Login_page.class));
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(WelcomePage.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();
 
-
+                }
+            });
 
 
-
-
-    }
-
-    private void displayWelcomeMessage(String username) {
-        nameView.setText("Welcome, " + username + "!");
-    }
-}
+//        myAuth = FirebaseAuth.getInstance();
+//        mUser = myAuth.getCurrentUser();
+//        String userID = getIntent().getStringExtra(mUser.getUid());
+//        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(userID);
+//
+//        nameView = (TextView) findViewById(R.id.welcome);
+//        //roleView  = (TextView) findViewById(R.id.textView4);
+//
+//        mDatabase.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(snapshot.exists()){
+//                    String username = snapshot.child("name").getValue(String.class);
+//                    displayWelcomeMessage(username);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                startActivity(new Intent(WelcomePage.this, Login_page.class));
+//            }
+//        });
+//
+//
+//
+//
+//
+//
+//    }
+//
+//    private void displayWelcomeMessage(String username) {
+//        nameView.setText("Welcome, " + username + "!");
+//    }
+}}
