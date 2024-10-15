@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
     EditText email;
     EditText password;
     EditText confirmPassword;
-    Button button;
+    Button button, loginRedirectbtn;
     FirebaseAuth auth;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
-    TextView textView, loginRedirectbtn;
+    TextView textView;
     private String selectedValue;
 
 
@@ -74,13 +74,13 @@ public class MainActivity extends AppCompatActivity {
         database=FirebaseDatabase.getInstance();
         databaseReference = database.getReference().child("users");
         textView=findViewById(R.id.textView2);
-        loginRedirectbtn = (TextView) findViewById(R.id.loginRedirect);
-        loginRedirectbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Login_page.class));
-            }
-        });
+        loginRedirectbtn = (Button) findViewById(R.id.loginRedirect);
+//        loginRedirectbtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, Login_page.class));
+//            }
+//        });
 
 
 
@@ -140,8 +140,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
+    // Redirects to login page
+    public void loginRedirect(View v) {
+        startActivity(new Intent(MainActivity.this, Login_page.class));
+    }
 
 
 
