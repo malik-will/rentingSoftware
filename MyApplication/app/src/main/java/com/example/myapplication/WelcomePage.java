@@ -53,33 +53,35 @@ public class WelcomePage extends AppCompatActivity {
 
         myAuth = FirebaseAuth.getInstance();
         mUser = myAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String userID = getIntent().getStringExtra(mUser.getUid());
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(userID);
 
-        nameView = (TextView) findViewById(R.id.textView3);
-        roleView  = (TextView) findViewById(R.id.textView4);
+        nameView = (TextView) findViewById(R.id.welcome);
+        //roleView  = (TextView) findViewById(R.id.textView4);
 
-        if(mUser==null){
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
-        } else{
-            mDatabase.child("users").child(mUser.getUid())
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            User reg_User = snapshot.getValue(User.class);
-                            String namestr = reg_User.getName();
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String username = snapshot.child("name").getValue(String.class);
+                    displayWelcomeMessage(username);
+                }
+            }
 
-                            nameView.setText(namestr);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                startActivity(new Intent(WelcomePage.this, Login_page.class));
+            }
+        });
 
 
 
+
+
+
+    }
+
+    private void displayWelcomeMessage(String username) {
+        nameView.setText("Welcome, " + username + "!");
     }
 }

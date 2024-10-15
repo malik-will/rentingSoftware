@@ -8,22 +8,13 @@
     tools:context=".WelcomePage">
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="406dp"
-        android:layout_height="55dp"
+        android:id="@+id/welcome"
+        android:layout_width="403dp"
+        android:layout_height="41dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="364dp"
-        android:text="TextView"
+        android:layout_marginTop="284dp"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="320dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

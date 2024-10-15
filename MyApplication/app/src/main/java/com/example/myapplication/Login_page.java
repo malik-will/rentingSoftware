@@ -44,7 +44,7 @@ public class Login_page extends AppCompatActivity {
         signupRedirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Login_page.this, WelcomePage.class));
+                startActivity(new Intent(Login_page.this, MainActivity.class));
             }
         });
 
@@ -68,7 +68,7 @@ public class Login_page extends AppCompatActivity {
                     } else if(pass.isEmpty()){
                         passlogin.setError("Password Cannot be empty");
                     }else{
-                        Toast.makeText(Login_page.this, "Password is Incorrect",Toast.LENGTH_SHORT).show();
+                        passlogin.setError("Password is wrong");
                     }
                 }else if(useremail.isEmpty()){
                     emaillogin.setError("Email cannot be empty");

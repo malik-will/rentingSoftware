@@ -133,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Creates dropdown menu allowing users to choose either lessor or rentor;
     private void createDropDown(){
-
-
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,new String[]{"Lessor","Rentor"});
         spinner.setAdapter(arrayAdapter);
     }
