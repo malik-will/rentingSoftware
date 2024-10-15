@@ -42,102 +42,109 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="52dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_gravity="center">
 
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#890404"
+            <LinearLayout
+                android:layout_width="360dp"
+                android:layout_height="600dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="52dp"
                 android:gravity="center"
-                android:textColor="#8C0000"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/editTextText"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="#000000"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="text" />
+                android:orientation="vertical">
 
 
-            <EditText
-                android:id="@+id/editTextText2"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="#000000"
-                android:ems="10"
-                android:hint="Username"
-                android:inputType="text" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="#890404"
+                    android:gravity="center"
+                    android:textColor="#8C0000"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/editTextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="#000000"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="text" />
 
 
-            <EditText
-                android:id="@+id/editTextTextEmailAddress"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="Email"
-                android:inputType="textEmailAddress" />
+                <EditText
+                    android:id="@+id/editTextText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="#000000"
+                    android:ems="10"
+                    android:hint="Username"
+                    android:inputType="text" />
 
 
-            <EditText
-                android:id="@+id/editTextTextPassword"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword" />
+                <EditText
+                    android:id="@+id/editTextTextEmailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
 
 
-            <EditText
-                android:id="@+id/editTextTextPassword2"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="Confirm Password"
-                android:inputType="textPassword" />
+                <EditText
+                    android:id="@+id/editTextTextPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
 
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp" />
+                <EditText
+                    android:id="@+id/editTextTextPassword2"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword" />
 
 
-            <TextView
-                android:id="@+id/loginRedirect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Already registered?, Login here"
-                android:textAlignment="center" />
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp" />
 
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:onClick="createAccount"
-                android:text="Create Account" />
+                <TextView
+                    android:id="@+id/loginRedirect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Already registered?, Login here"
+                    android:textAlignment="center" />
 
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:onClick="createAccount"
+                    android:text="Create Account" />
+
+
+            </LinearLayout>
+        </FrameLayout>
 
 
     </LinearLayout>
