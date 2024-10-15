@@ -73,7 +73,7 @@
                     android:layout_marginTop="8dp"
                     android:backgroundTint="#000000"
                     android:ems="10"
-                    android:hint="Name"
+                    android:hint="First Name & Last Name"
                     android:inputType="text" />
 
 
