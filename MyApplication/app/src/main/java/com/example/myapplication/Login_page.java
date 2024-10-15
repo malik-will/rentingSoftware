@@ -55,28 +55,53 @@ public class Login_page extends AppCompatActivity {
                 String useremail = emaillogin.getText().toString();
                 String pass = passlogin.getText().toString();
 
-                if(!useremail.isEmpty()&& Patterns.EMAIL_ADDRESS.matcher(useremail).matches()){
-                    if(!pass.isEmpty()){
-                        auth.signInWithEmailAndPassword(useremail, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                Toast.makeText(Login_page.this, "Login Successful",Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Login_page.this, WelcomePage.class));
+                if(useremail.equals("admin")&&pass.equals("XPI76SZUqyCjVxgnUjm0")){
+                    auth.signInWithEmailAndPassword("admin@gmail.com", pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Toast.makeText(Login_page.this, "Login Successful",Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(Login_page.this, WelcomePage.class));
 
-                            }
-                        });
-                    } else if(pass.isEmpty()){
-                        passlogin.setError("Password Cannot be empty");
-                    }else{
-                        passlogin.setError("Password is wrong");
-                    }
-                }else if(useremail.isEmpty()){
+                        }
+                    });
+
+                }
+                else if(useremail.isEmpty()){
                     emaillogin.setError("Email cannot be empty");
-                }else{
-                    emaillogin.setError("Please enter valid email");
+                    return;
+                }
+                else if(pass.isEmpty()){
+                    passlogin.setError("Password Cannot be empty");
+                    return;
                 }
 
+                else if(pass.length()<6){
+                    passlogin.setError("Password must be at least 6 characters");
+                    return;
                 }
+                if(Patterns.EMAIL_ADDRESS.matcher(useremail).matches()){
+                    auth.signInWithEmailAndPassword(useremail, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Toast.makeText(Login_page.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(Login_page.this, WelcomePage.class));
+
+                        }
+
+                    }).addOnFailureListener(e -> {
+                        // This will run when the credentials do not match any user
+                        Toast.makeText(Login_page.this, "Login Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+
+                }
+                else{
+                    passlogin.setError("Password is invalid for this email");
+                }
+
+
+
+
+            }
         });
 
 

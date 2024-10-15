@@ -55,6 +55,7 @@ public class WelcomePage extends AppCompatActivity {
 
 
             myAuth=FirebaseAuth.getInstance();
+
             mUser = myAuth.getCurrentUser();
             nameView = findViewById(R.id.welcome);
             mDatabase = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
@@ -70,4 +71,5 @@ public class WelcomePage extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(WelcomePage.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();
                 }
-            });}}
+            });
+        }}
