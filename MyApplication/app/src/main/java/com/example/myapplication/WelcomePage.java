@@ -53,6 +53,7 @@ public class WelcomePage extends AppCompatActivity {
             return insets;
         });
 
+
             myAuth=FirebaseAuth.getInstance();
             mUser = myAuth.getCurrentUser();
             nameView = findViewById(R.id.welcome);
@@ -68,42 +69,5 @@ public class WelcomePage extends AppCompatActivity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(WelcomePage.this, "Something Wrong Happened", Toast.LENGTH_LONG).show();
-
                 }
-            });
-
-
-//        myAuth = FirebaseAuth.getInstance();
-//        mUser = myAuth.getCurrentUser();
-//        String userID = getIntent().getStringExtra(mUser.getUid());
-//        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(userID);
-//
-//        nameView = (TextView) findViewById(R.id.welcome);
-//        //roleView  = (TextView) findViewById(R.id.textView4);
-//
-//        mDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()){
-//                    String username = snapshot.child("name").getValue(String.class);
-//                    displayWelcomeMessage(username);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                startActivity(new Intent(WelcomePage.this, Login_page.class));
-//            }
-//        });
-//
-//
-//
-//
-//
-//
-//    }
-//
-//    private void displayWelcomeMessage(String username) {
-//        nameView.setText("Welcome, " + username + "!");
-//    }
-}}
+            });}}
