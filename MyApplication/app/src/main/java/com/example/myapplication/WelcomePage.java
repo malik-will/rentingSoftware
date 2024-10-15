@@ -54,6 +54,7 @@ public class WelcomePage extends AppCompatActivity {
         });
 
             myAuth=FirebaseAuth.getInstance();
+
             mUser = myAuth.getCurrentUser();
             nameView = findViewById(R.id.welcome);
             mDatabase = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
@@ -106,4 +107,7 @@ public class WelcomePage extends AppCompatActivity {
 //    private void displayWelcomeMessage(String username) {
 //        nameView.setText("Welcome, " + username + "!");
 //    }
-}}
+}
+
+
+}
