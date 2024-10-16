@@ -37,9 +37,12 @@ public class Login_page extends AppCompatActivity {
             return insets;
         });
 
+        //Connecting to Database and fetching data entered(email and password)
         auth = FirebaseAuth.getInstance();
         emaillogin = findViewById(R.id.elogin);
         passlogin = findViewById(R.id.passlogin);
+
+        //Signup button Functionality
         signupRedirect = findViewById(R.id.signupRedirect);
         signupRedirect.setOnClickListener(new View.OnClickListener() {
             @Override
