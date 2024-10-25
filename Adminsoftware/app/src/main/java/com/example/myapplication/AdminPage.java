@@ -42,6 +42,10 @@ public class AdminPage extends AppCompatActivity{
     private List<Category> categoryList;
     ListView listViewCategories;
     Button buttonAddcategory;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
+    List<User> users;
+    ListView listView;
 
 
     @Override
@@ -62,6 +66,11 @@ public class AdminPage extends AppCompatActivity{
         buttonAddcategory = (Button) findViewById(R.id.buttonAddcategory);
 
         categoryList = new ArrayList<>();
+        database = FirebaseDatabase.getInstance();
+        databaseReference =database.getReference().child("users");
+        listView = findViewById(R.id.listViewUsers);
+        users = new ArrayList<>();
+
 
         buttonAddcategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +80,39 @@ public class AdminPage extends AppCompatActivity{
         });
 
     }
+    @Override
+    protected void onStart(){
+
+        super.onStart();
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                users.clear();
+                for(DataSnapshot data: snapshot.getChildren()){
+
+                    String name = data.child("name").getValue(String.class);
+                    String role = data.child("role").getValue(String.class);
+                    String username = data.child("username").getValue(String.class);
+                    String email = data.child("email").getValue(String.class);
+                    User user = new User(name,username,email,role);
+                    users.add(user);
+                }
+                showUsers();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+    public void showUsers(){
+        UserList userList = new UserList(AdminPage.this,users);
+        listView.setAdapter(userList);
+    }
+
 
     private void addCategory() {
         String name = editTextName.getText().toString().trim();

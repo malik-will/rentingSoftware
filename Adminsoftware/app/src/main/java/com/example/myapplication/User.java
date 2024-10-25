@@ -37,5 +37,7 @@ public class User {
         return email;
     }
 
-
+    public String getRole() {
+        return role;
+    }
 }
