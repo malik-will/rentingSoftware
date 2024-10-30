@@ -1,36 +1,26 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import android.content.Intent;
-import android.widget.AdapterView;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.appcompat.app.AlertDialog;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +36,7 @@ public class AdminPage extends AppCompatActivity{
     DatabaseReference databaseReference;
     List<User> users;
     ListView listView;
+    Button display;
 
 
     @Override
@@ -53,24 +44,32 @@ public class AdminPage extends AppCompatActivity{
         databaseCategories = FirebaseDatabase.getInstance().getReference("categories");
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_admin_page);
+        setContentView(R.layout.adminpage2);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        editTextName = (EditText) findViewById(R.id.editTextName);
-        editTextDescription = (EditText) findViewById(R.id.editTextDescription);
-        listViewCategories = (ListView) findViewById(R.id.listViewCategories);
-        buttonAddcategory = (Button) findViewById(R.id.buttonAddcategory);
+        editTextName = (EditText) findViewById(R.id.editTextName29);
+        editTextDescription = (EditText) findViewById(R.id.editTextDescription278);
+        //listViewCategories = (ListView) findViewById(R.id.listViewCategories);
+        buttonAddcategory = (Button) findViewById(R.id.buttonAddcategory556);
 
         categoryList = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         databaseReference =database.getReference().child("users");
-        listView = findViewById(R.id.listViewUsers);
+        //listView = findViewById(R.id.listViewUsers);
         users = new ArrayList<>();
+        display = (Button) findViewById(R.id.buttonDisplayUsers);
 
+        display.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminPage.this,UserDisplay.class);
+                startActivity(intent);
+            }
+        });
 
         buttonAddcategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,38 +79,7 @@ public class AdminPage extends AppCompatActivity{
         });
 
     }
-    @Override
-    protected void onStart(){
 
-        super.onStart();
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                users.clear();
-                for(DataSnapshot data: snapshot.getChildren()){
-
-                    String name = data.child("name").getValue(String.class);
-                    String role = data.child("role").getValue(String.class);
-                    String username = data.child("username").getValue(String.class);
-                    String email = data.child("email").getValue(String.class);
-                    User user = new User(name,username,email,role);
-                    users.add(user);
-                }
-                showUsers();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
-    public void showUsers(){
-        UserList userList = new UserList(AdminPage.this,users);
-        listView.setAdapter(userList);
-    }
 
 
     private void addCategory() {
