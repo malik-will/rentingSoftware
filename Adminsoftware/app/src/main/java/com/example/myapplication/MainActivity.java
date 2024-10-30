@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = auth.getCurrentUser();
-                                User user1 = new User(name.getText().toString(),userName.getText().toString(),email.getText().toString(), selectedValue);
+                                User user1 = new User(name.getText().toString(),userName.getText().toString(),email.getText().toString(), selectedValue,user.getUid().toString());
                                 Map<String,Object> map = user1.toMap();
                                 databaseReference.child(user.getUid()).setValue(map);
 

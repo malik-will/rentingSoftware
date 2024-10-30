@@ -13,13 +13,18 @@ import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +42,9 @@ public class AdminPage extends AppCompatActivity{
     List<User> users;
     ListView listView;
     Button display;
+    Button deleteUser;
+    EditText userToDelete;
+
 
 
     @Override
@@ -62,6 +70,34 @@ public class AdminPage extends AppCompatActivity{
         //listView = findViewById(R.id.listViewUsers);
         users = new ArrayList<>();
         display = (Button) findViewById(R.id.buttonDisplayUsers);
+        deleteUser = (Button) findViewById(R.id.buttonDeleteUser);
+
+        database = FirebaseDatabase.getInstance();
+        databaseReference =database.getReference().child("users");
+        userToDelete = (EditText) findViewById(R.id.editTextName39);
+        users = new ArrayList<>();
+
+        deleteUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = userToDelete.getText().toString();
+                for (User user: users){
+                    if (user.getName().equals(name)){
+                        //Toast.makeText(AdminPage.this, "User Deleted", Toast.LENGTH_SHORT).show();
+                        databaseReference.child(user.getId()).removeValue().addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                Toast.makeText(AdminPage.this, "User Deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+
+                }
+                userToDelete.setText("");
+
+
+            }
+        });
 
         display.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +116,32 @@ public class AdminPage extends AppCompatActivity{
 
     }
 
+    protected void onStart() {
+
+        super.onStart();
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                users.clear();
+                for (DataSnapshot data : snapshot.getChildren()) {
+
+                    String name = data.child("name").getValue(String.class);
+                    String role = data.child("role").getValue(String.class);
+                    String username = data.child("username").getValue(String.class);
+                    String email = data.child("email").getValue(String.class);
+                    String id = data.child("id").getValue(String.class);
+                    User user = new User(name, username, email, role, id);
+                    users.add(user);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        }
 
 
     private void addCategory() {

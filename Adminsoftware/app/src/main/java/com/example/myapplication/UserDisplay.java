@@ -55,7 +55,8 @@ public class UserDisplay extends AppCompatActivity {
                     String role = data.child("role").getValue(String.class);
                     String username = data.child("username").getValue(String.class);
                     String email = data.child("email").getValue(String.class);
-                    User user = new User(name,username,email,role);
+                    String id = data.child("id").getValue(String.class);
+                    User user = new User(name,username,email,role,id);
                     users.add(user);
                 }
                 showUsers();
