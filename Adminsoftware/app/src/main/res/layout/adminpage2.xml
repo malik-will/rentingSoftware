@@ -8,13 +8,13 @@
 
     <LinearLayout
         android:id="@+id/linearLayout90"
-        android:layout_width="420dp"
-        android:layout_height="323dp"
-        android:layout_marginEnd="3dp"
+        android:layout_width="409dp"
+        android:layout_height="314dp"
+        android:layout_marginBottom="4dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar90"
@@ -57,6 +57,15 @@
             android:gravity="center"
             android:text="DELETE USER"
             android:translationX="40dp"
+            android:translationY="40dp" />
+
+        <Button
+            android:id="@+id/buttonAddcategory2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:text="DISPLAY ALL USERS"
             android:translationY="40dp" />
 
     </LinearLayout>
