@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class AdminPage extends AppCompatActivity{
     EditText editTextName;
     EditText editTextDescription;
     private DatabaseReference databaseCategories;
+    DatabaseReference reference;
     private List<Category> categoryList;
     ListView listViewCategories;
     Button buttonAddcategory;
@@ -44,6 +46,8 @@ public class AdminPage extends AppCompatActivity{
     Button display;
     Button deleteUser;
     EditText userToDelete;
+    Button editCategory;
+    EditText descriptionEdit;
 
 
 
@@ -71,6 +75,7 @@ public class AdminPage extends AppCompatActivity{
         users = new ArrayList<>();
         display = (Button) findViewById(R.id.buttonDisplayUsers);
         deleteUser = (Button) findViewById(R.id.buttonDeleteUser);
+        editCategory = (Button) findViewById(R.id.buttonAddcategory903);
 
         database = FirebaseDatabase.getInstance();
         databaseReference =database.getReference().child("users");
@@ -115,6 +120,19 @@ public class AdminPage extends AppCompatActivity{
             }
         });
 
+        editCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!validateEntry()){
+                    return;
+                }
+                else{
+                    isCategory();
+                }
+                //startActivity(new Intent(AdminPage.this, EditCategory.class));
+            }
+        });
+
     }
 
     protected void onStart() {
@@ -140,6 +158,7 @@ public class AdminPage extends AppCompatActivity{
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+
             }
         });
         }
@@ -160,5 +179,65 @@ public class AdminPage extends AppCompatActivity{
             Toast.makeText(this, "Please enter a name", Toast.LENGTH_LONG).show();
         }
     }
+
+
+
+    public boolean validateEntry(){
+        String categ = editTextName.getText().toString();
+
+        if(categ.isEmpty()){
+            editTextName.setError("Field cannot be empty");
+            return false;
+        }
+        else{
+            editTextName.setError(null);
+            return true;
+        }
+    }
+    public void isCategory(){
+        String categoryEntered = editTextName.getText().toString().trim();
+
+        reference = FirebaseDatabase.getInstance().getReference("categories");
+        Query checkCategory = reference.orderByChild("categoryName").equalTo(categoryEntered);
+
+        checkCategory.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    editTextName.setError(null);
+
+                    for(DataSnapshot categorySnapshot:snapshot.getChildren()){
+                        String categoryName=categorySnapshot.child("categoryName").getValue(String.class);
+                        if (categoryName != null && categoryName.equals(categoryEntered)) {
+                            editTextName.setError((null));
+                            String categoryDescription=categorySnapshot.child("description").getValue(String.class);
+                            Intent intent = new Intent(AdminPage.this, EditCategory.class);
+
+                            intent.putExtra("categoryName", categoryName);
+                            intent.putExtra("description", categoryDescription);
+
+                            startActivity(intent);
+
+                        }
+                    }
+                }
+                else{
+                    editTextName.setError("No such category exists");
+                    editTextName.requestFocus();
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+    }
+
 }
 

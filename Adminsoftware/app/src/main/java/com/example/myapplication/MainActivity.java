@@ -75,15 +75,6 @@ public class MainActivity extends AppCompatActivity {
         databaseReference = database.getReference().child("users");
         textView=findViewById(R.id.textView2);
         loginRedirectbtn = (Button) findViewById(R.id.loginRedirect);
-//        loginRedirectbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, Login_page.class));
-//            }
-//        });
-
-
-
 
 
 
