@@ -84,6 +84,7 @@ public class AdminPage extends AppCompatActivity{
                 for (User user: users){
                     if (user.getName().equals(name)){
                         //Toast.makeText(AdminPage.this, "User Deleted", Toast.LENGTH_SHORT).show();
+
                         databaseReference.child(user.getId()).removeValue().addOnCompleteListener(task -> {
                             if(task.isSuccessful()){
                                 Toast.makeText(AdminPage.this, "User Deleted", Toast.LENGTH_SHORT).show();

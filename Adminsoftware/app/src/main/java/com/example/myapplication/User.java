@@ -9,6 +9,7 @@ public class User {
     private String email;
     private String role;
     private String id;
+    private boolean isDisabled;
 
 
     public User(String name, String userName, String email, String role,String id){
@@ -17,6 +18,7 @@ public class User {
         this.email=email;
         this.role=role;
         this.id = id;
+        isDisabled=false;
 
     }
 
@@ -27,9 +29,13 @@ public class User {
         result.put("email", email);
         result.put("role", role);
         result.put("id",id);
+        result.put("disabled",isDisabled);
         return result;
     }
 
+    public void setisDisabled(boolean bool){
+        isDisabled=bool;
+    }
     public String getName(){
         return name;
     }
@@ -46,5 +52,8 @@ public class User {
 
     public String getId() {
         return id;
+    }
+    public boolean getisDisabled(){
+        return isDisabled;
     }
 }

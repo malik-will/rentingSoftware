@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,12 +19,20 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Login_page extends AppCompatActivity {
     private FirebaseAuth auth;
     private EditText passlogin, emaillogin;
     private TextView signupRedirect;
     private Button loginbutton;
+    private FirebaseUser mUser;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +63,8 @@ public class Login_page extends AppCompatActivity {
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 String useremail = emaillogin.getText().toString();
                 String pass = passlogin.getText().toString();
 
@@ -86,8 +97,33 @@ public class Login_page extends AppCompatActivity {
                     auth.signInWithEmailAndPassword(useremail, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
-                            Toast.makeText(Login_page.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(Login_page.this, WelcomePage.class));
+                            mUser = FirebaseAuth.getInstance().getCurrentUser();
+                            mDatabase= FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
+                            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    String email = snapshot.child("email").getValue(String.class);
+                                    Boolean disabled = snapshot.child("disabled").getValue(Boolean.class);
+                                    if(email==null) {
+                                        Toast.makeText(Login_page.this, "Login Failed", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    else if(disabled){
+                                        Toast.makeText(Login_page.this, "Account Disabled", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        Toast.makeText(Login_page.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(Login_page.this, WelcomePage.class));
+                                        finish();
+                                    }
+
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
 
                         }
 
