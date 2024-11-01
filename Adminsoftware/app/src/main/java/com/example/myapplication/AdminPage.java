@@ -19,6 +19,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -80,27 +82,58 @@ public class AdminPage extends AppCompatActivity{
 
         database = FirebaseDatabase.getInstance();
         databaseReference =database.getReference().child("users");
-        userToDelete = (EditText) findViewById(R.id.editTextName39);
-        users = new ArrayList<>();
+        userToDelete =  findViewById(R.id.editTextName39);
+
 
         deleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                userToDelete =  findViewById(R.id.editTextName39);
                 String name = userToDelete.getText().toString();
-                for (User user: users){
-                    if (user.getName().equals(name)){
-                        //Toast.makeText(AdminPage.this, "User Deleted", Toast.LENGTH_SHORT).show();
+                Query query = databaseReference.orderByChild("name").equalTo(name);
 
-                        databaseReference.child(user.getId()).removeValue().addOnCompleteListener(task -> {
-                            if(task.isSuccessful()){
-                                Toast.makeText(AdminPage.this, "User Deleted", Toast.LENGTH_SHORT).show();
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            for(DataSnapshot user: snapshot.getChildren()){
+                                String id = user.getKey();
+                                databaseReference.child(id).removeValue().addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        showToast("Deleted");
+                                    }
+                                });
+                                userToDelete.setText("");
+
                             }
-                        });
+                        }
+                        else {
+                            showToast("Enter valid name");
+                        }
 
                     }
 
-                }
-                userToDelete.setText("");
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+//                for (User user: users){
+//                    if (user.getName().equals(name)){
+//                        //Toast.makeText(AdminPage.this, "User Deleted", Toast.LENGTH_SHORT).show();
+//
+//                        databaseReference.child(user.getId()).removeValue().addOnCompleteListener(task -> {
+//                            if(task.isSuccessful()){
+//                                Toast.makeText(AdminPage.this, "User Deleted", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//
+//                    }
+//
+//                }
+
 
 
             }
@@ -238,6 +271,20 @@ public class AdminPage extends AppCompatActivity{
         });
 
 
+
+    }
+    public void showToast(String message){
+        Toast.makeText(AdminPage.this, message, Toast.LENGTH_SHORT).show();
+    }
+    public void deleteUser(String id){
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(id);
+        Task<Void> mTask = databaseReference.setValue(null);
+        mTask.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                showToast("Deleted");
+            }
+        });
 
     }
 
