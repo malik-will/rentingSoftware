@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +28,7 @@ public class UserDisplay extends AppCompatActivity {
     DatabaseReference databaseReference;
     List<User> users;
     ListView listView;
+    Button backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +42,17 @@ public class UserDisplay extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         databaseReference =database.getReference().child("users");
         listView = findViewById(R.id.userListView);
+        backButton = findViewById(R.id.activity_UserDisplay_Back);
         users = new ArrayList<>();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AdminPage.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
     }
     @Override
