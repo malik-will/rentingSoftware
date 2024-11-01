@@ -21,7 +21,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +47,7 @@ public class AdminPage extends AppCompatActivity{
     ListView listView;
     Button display;
     Button deleteUser;
+    Button disableUser;
     EditText userToDelete;
     Button editCategory;
     EditText descriptionEdit;
@@ -77,6 +77,7 @@ public class AdminPage extends AppCompatActivity{
         //listView = findViewById(R.id.listViewUsers);
         users = new ArrayList<>();
         display = (Button) findViewById(R.id.buttonDisplayUsers);
+        disableUser = (Button) findViewById(R.id.buttonDisableUser);
         deleteUser = (Button) findViewById(R.id.buttonDeleteUser);
         editCategory = (Button) findViewById(R.id.buttonAddcategory903);
 
@@ -134,6 +135,44 @@ public class AdminPage extends AppCompatActivity{
 //
 //                }
 
+
+
+            }
+        });
+
+        disableUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userToDelete =  findViewById(R.id.editTextName39);
+                String name = userToDelete.getText().toString();
+                Query query = databaseReference.orderByChild("name").equalTo(name);
+
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            for(DataSnapshot user: snapshot.getChildren()){
+                                String id = user.getKey();
+                                databaseReference.child(id).child("disabled").setValue(true).addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        showToast("User Disabled");
+                                    }
+                                });
+                                userToDelete.setText("");
+
+                            }
+                        }
+                        else {
+                            showToast("Enter valid name");
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
 
             }
