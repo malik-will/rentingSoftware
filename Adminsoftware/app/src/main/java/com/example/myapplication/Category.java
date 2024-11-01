@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Category {
 
     private String _id;
@@ -16,6 +19,14 @@ public class Category {
     public Category(String productname, String description) {
         _category = productname;
         _description = description;
+    }
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("categoryName", _category);
+        result.put("description", _description);
+        result.put("id",_id);
+
+        return result;
     }
     public void setId(String id) {
         _id = id;

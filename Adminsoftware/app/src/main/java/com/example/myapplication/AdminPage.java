@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AdminPage extends AppCompatActivity{
 
@@ -170,7 +171,8 @@ public class AdminPage extends AppCompatActivity{
         if(!TextUtils.isEmpty(name)){
             String id = databaseCategories.push().getKey();
             Category category = new Category(id, name, description);
-            databaseCategories.child(id).setValue(category);
+            Map<String,Object> map = category.toMap();
+            databaseCategories.child(id).setValue(map);
             editTextName.setText("");
             editTextDescription.setText("");
             Toast.makeText(this, "Product added", Toast.LENGTH_LONG).show();
