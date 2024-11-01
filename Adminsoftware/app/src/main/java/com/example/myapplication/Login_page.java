@@ -93,7 +93,7 @@ public class Login_page extends AppCompatActivity {
                     passlogin.setError("Password must be at least 6 characters");
                     return;
                 }
-                if(Patterns.EMAIL_ADDRESS.matcher(useremail).matches()){
+                else if(Patterns.EMAIL_ADDRESS.matcher(useremail).matches()){
                     auth.signInWithEmailAndPassword(useremail, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
