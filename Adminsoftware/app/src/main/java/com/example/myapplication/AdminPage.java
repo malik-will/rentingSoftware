@@ -39,7 +39,6 @@ public class AdminPage extends AppCompatActivity{
     private DatabaseReference databaseCategories;
     DatabaseReference reference;
     private List<Category> categoryList;
-    ListView listViewCategories;
     Button buttonAddcategory;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
@@ -50,7 +49,6 @@ public class AdminPage extends AppCompatActivity{
     Button disableUser;
     EditText userToDelete;
     Button editCategory;
-    EditText descriptionEdit;
 
 
 
@@ -315,17 +313,5 @@ public class AdminPage extends AppCompatActivity{
     public void showToast(String message){
         Toast.makeText(AdminPage.this, message, Toast.LENGTH_SHORT).show();
     }
-    public void deleteUser(String id){
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(id);
-        Task<Void> mTask = databaseReference.setValue(null);
-        mTask.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                showToast("Deleted");
-            }
-        });
-
-    }
-
 }
 
