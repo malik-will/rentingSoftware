@@ -58,16 +58,42 @@ public class EditCategory  extends AppCompatActivity{
         descriptionEdit = findViewById(R.id.editTextDescription20);
         deleteCategory = findViewById(R.id.buttonAddcategory39);
         saveButton = findViewById(R.id.buttonAddcategory58);
-        categoryList = new ArrayList<>();
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String categoryEntered = categoryEdit.getText().toString();
 
-        //categoryToDelete = findViewById(R.id.editTextName29);
-        //descriptionToDelete = findViewById(R.id.editTextDescription20);
+                Query query2 = databaseReference.orderByChild("categoryName").equalTo(categoryEntered);
+                query2.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            for(DataSnapshot categorySnapshot: snapshot.getChildren()){
+                                String id2 = categorySnapshot.getKey();
+                                String newCategoryName = categoryEdit.getText().toString();
+                                String newCategoryDescription = descriptionEdit.getText().toString();
+
+                                saveData(id2, newCategoryName, newCategoryDescription);
+                                showToast("CATEGORY DATA UPDATED");
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
+
 
         deleteCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String categoryEntered = categoryEdit.getText().toString();
-                String description = descriptionEdit.getText().toString();
                 Query query = databaseReference.orderByChild("categoryName").equalTo(categoryEntered);
 
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -89,33 +115,12 @@ public class EditCategory  extends AppCompatActivity{
                     }
                 });
 
-
-//                for(Category cat: categoryList){
-//                    if(cat.getCategoryName().equals(categor)){
-//                        databaseReference.child(cat.getId()).removeValue().addOnCompleteListener(task -> {
-//                            if(task.isSuccessful()){
-//                                Toast.makeText(EditCategory.this, "Category Deleted", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                        });
-//
-//                        categoryEdit.setText("");
-//                        descriptionEdit.setText("");
-//                    }
-//                    else {
-//                        Toast.makeText(EditCategory.this, "Please enter a category name to delete", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                }
-
-
-
             }
         });
 
+
+
         showCategory();
-
-
 
 
     }
@@ -145,5 +150,11 @@ public class EditCategory  extends AppCompatActivity{
 
 
     }
+    public void saveData(String id, String newCategoryName, String newCategoryDescription){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("categories").child(id);
+        Category category = new Category(id, newCategoryName, newCategoryDescription);
+        ref.setValue(category.toMap());
+    }
 
 }
+
