@@ -25,7 +25,6 @@ public class Category {
         result.put("categoryName", _category);
         result.put("description", _description);
         result.put("id",_id);
-
         return result;
     }
     public void setId(String id) {

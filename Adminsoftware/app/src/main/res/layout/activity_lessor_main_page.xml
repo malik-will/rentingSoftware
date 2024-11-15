@@ -36,14 +36,6 @@
                 android:textSize="24sp" />
 
             <EditText
-                android:id="@+id/editTextName"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:ems="10"
-                android:hint="Add Category"
-                android:inputType="text" />
-
-            <EditText
                 android:id="@+id/editTextName3"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
@@ -74,6 +66,11 @@
                 android:ems="10"
                 android:hint="Renting Period"
                 android:inputType="text" />
+
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="match_parent"
+                android:layout_height="46dp" />
 
             <Button
                 android:id="@+id/buttonAddcategory"
