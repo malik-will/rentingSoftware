@@ -89,10 +89,16 @@
                 android:layout_height="61dp" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/backToMainPage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Back to Main Page" />
+
+            <Button
+                android:id="@+id/viewCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View Categories" />
 
         </LinearLayout>
     </FrameLayout>

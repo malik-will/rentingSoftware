@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class UserList extends ArrayAdapter<User> {
+public class CategoryList extends ArrayAdapter<Category> {
     private Activity context;
-    List<User> users;
-    public UserList(Activity context,List<User> users){
-        super(context,R.layout.user_list,users);
+    List<Category> categories;
+    public CategoryList(Activity context,List<Category> categories){
+        super(context,R.layout.user_list,categories);
         this.context=context;
-        this.users=users;
+        this.categories=categories;
     }
 
     @Override
@@ -27,13 +27,12 @@ public class UserList extends ArrayAdapter<User> {
         }
 
         TextView name = (TextView) listViewItem.findViewById(R.id.textView10);
-        TextView role = (TextView) listViewItem.findViewById(R.id.textView11);
+        TextView desc = (TextView) listViewItem.findViewById(R.id.textView11);
 
-        User user = users.get(position);
+        Category category = categories.get(position);
 
-        name.setText("Name: "+user.getName());
-        role.setText("Role: "+user.getRole());
+        name.setText("Name: "+category.getCategoryName());
+        desc.setText("Description: "+category.getDescription());
         return listViewItem;
     }
 }
-

@@ -31,6 +31,7 @@ public class WelcomePage extends AppCompatActivity {
     private TextView roleView;
     private Button adminButton;
     Spinner spinnerr;
+    private Button lesserButton;
 
     private FirebaseAuth myAuth;
     private FirebaseUser mUser;
@@ -53,6 +54,7 @@ public class WelcomePage extends AppCompatActivity {
             mUser = myAuth.getCurrentUser();
             nameView = findViewById(R.id.welcome);
             adminButton = findViewById(R.id.adminPageButton);
+            lesserButton = findViewById(R.id.lessorPageButton);
             mDatabase = FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
             mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -63,6 +65,10 @@ public class WelcomePage extends AppCompatActivity {
                     if (roles != null && roles.equals("admin")) {
                         adminButton.setVisibility(View.VISIBLE);
                     }
+                    else if (roles!=null&&roles.equals("Lessor")){
+                        lesserButton.setVisibility(View.VISIBLE);
+                    }
+
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -73,6 +79,13 @@ public class WelcomePage extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(WelcomePage.this, AdminPage.class));
+                }
+            });
+            lesserButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(WelcomePage.this, LessorPage.class);
+                    startActivity(intent);
                 }
             });
         }
