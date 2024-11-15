@@ -7,7 +7,7 @@ import java.util.Map;
 public class Category {
 
     private String _id;
-    private String _category;
+    private static String _category;
     private String _description;
     public Category() {
     }
@@ -20,6 +20,8 @@ public class Category {
         _category = productname;
         _description = description;
     }
+
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("categoryName", _category);
@@ -36,7 +38,7 @@ public class Category {
     public void setCategoryName(String category) {
         _category = category;
     }
-    public String getCategoryName() {
+    public static String getCategoryName() {
         return _category;
     }
     public void setDescription(String description) {
