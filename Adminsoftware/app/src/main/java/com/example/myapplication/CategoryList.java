@@ -31,8 +31,8 @@ public class CategoryList extends ArrayAdapter<Category> {
 
         Category category = categories.get(position);
 
-        name.setText("Name: "+category.getCategoryName());
-        desc.setText("Description: "+category.getDescription());
+        name.setText("Name: " + category.getCategoryName());
+        desc.setText("Description: " + category.getDescription());
         return listViewItem;
     }
 }

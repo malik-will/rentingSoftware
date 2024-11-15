@@ -7,7 +7,7 @@ import java.util.Map;
 public class Category {
 
     private String _id;
-    private static String _category;
+    private String _category;
     private String _description;
     public Category() {
     }
@@ -38,7 +38,7 @@ public class Category {
     public void setCategoryName(String category) {
         _category = category;
     }
-    public static String getCategoryName() {
+    public String getCategoryName() {
         return _category;
     }
     public void setDescription(String description) {

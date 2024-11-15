@@ -103,7 +103,6 @@ public class LessorPage extends AppCompatActivity {
                 adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner2.setAdapter(adapter2);
                 Log.d("Firebase", "Categories: " + categoriesList);
-                Toast.makeText(LessorPage.this, "Categories fetched successfully", Toast.LENGTH_SHORT).show();
             }
 
 
