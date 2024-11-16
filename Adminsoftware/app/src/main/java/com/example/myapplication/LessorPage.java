@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.DatePicker;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Calendar;
 
 public class LessorPage extends AppCompatActivity {
 
@@ -38,6 +41,8 @@ public class LessorPage extends AppCompatActivity {
     EditText editTextName3;
     EditText editTextDescription;
     EditText editTextFee;
+    EditText editStartDate;
+    EditText editEndDate;
 
 
 
@@ -61,6 +66,8 @@ public class LessorPage extends AppCompatActivity {
         editTextName3 = findViewById(R.id.editTextName3);
         editTextDescription = findViewById(R.id.editTextDescription);
         editTextFee = findViewById(R.id.editTextDescription2);
+        editStartDate = findViewById(R.id.editTextDate1);
+        editEndDate = findViewById(R.id.editTextDate2);
 
 
         viewCategories.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +92,26 @@ public class LessorPage extends AppCompatActivity {
                 addItem();
             }
         });
+
+        editStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickDate(editStartDate);
+            }
+        });
+
+        editEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickDate(editEndDate);
+            }
+        });
+//        editEndDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                pickDate(editEndDate);
+//            }
+//        });
         loadCategory();
     }
 
@@ -140,6 +167,20 @@ public class LessorPage extends AppCompatActivity {
         editTextDescription.setText("");
         editTextFee.setText("");
 
+    }
+
+    private void pickDate(EditText dateField) {
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+            LessorPage.this, new DatePickerDialog.OnDateSetListener() {
+                @Override public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    dateField.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                }
+            }, year, month, day);
+        datePickerDialog.show();
     }
 
 }
