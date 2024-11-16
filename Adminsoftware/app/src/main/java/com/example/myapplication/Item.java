@@ -7,6 +7,8 @@ public class Item {
     private String _itemName;
     private String _fee;
     private String _description;
+    private String _startDate;
+    private String _endDate;
     private Category _category;
 
     public Item(String id, String itemName, String description, Category category) {
@@ -16,11 +18,13 @@ public class Item {
         _category = category;
     }
 
-    public Item(String id, String itemName, String description, String fee, String selectedCategory) {
+    public Item(String id, String itemName, String description, String fee, String startDate, String endDate, String selectedCategory) {
         _id = id;
         _itemName = itemName;
         _description = description;
         _fee = fee;
+        _startDate = startDate;
+        _endDate = endDate;
       //  _category = Category.fromName(selectedCategory);
     }
 
@@ -63,4 +67,12 @@ public class Item {
     public String getDescription() {
         return _description;
     }
+
+    public void setStartDate(String newStartDate) {_startDate = newStartDate;}
+
+    public String getStartDate() {return _startDate;}
+
+    public void setEndDate(String newEndDate) {_endDate = newEndDate;}
+
+    public String getEndDate() {return _endDate;}
 }

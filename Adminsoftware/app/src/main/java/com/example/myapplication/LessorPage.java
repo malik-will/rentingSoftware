@@ -150,7 +150,9 @@ public class LessorPage extends AppCompatActivity {
         String name = editTextName3.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
         String fee = editTextFee.getText().toString().trim();
-        if (name.isEmpty() || description.isEmpty() || fee.isEmpty()) {
+        String startDate = editStartDate.getText().toString().trim();
+        String endDate = editEndDate.getText().toString().trim();
+        if (name.isEmpty() || description.isEmpty() || fee.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -160,13 +162,14 @@ public class LessorPage extends AppCompatActivity {
         }
 
         String id = databaseRef.push().getKey();
-        Item item = new Item(id, name, description, fee, selectedCategory);
+        Item item = new Item(id, name, description, fee, startDate, endDate, selectedCategory);
         databaseRef.child(id).setValue(item);
         Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show();
         editTextName3.setText("");
         editTextDescription.setText("");
         editTextFee.setText("");
-
+        editStartDate.setText("");
+        editEndDate.setText("");
     }
 
     private void pickDate(EditText dateField) {
