@@ -25,6 +25,9 @@
             android:name=".Login_page"
             android:exported="false" />
         <activity
+            android:name=".LessorEditor"
+            android:exported="false" />
+        <activity
             android:name=".EditCategory"
             android:exported="false" />
         <activity

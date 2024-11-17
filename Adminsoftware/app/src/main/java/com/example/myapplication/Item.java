@@ -9,9 +9,9 @@ public class Item {
     private String _description;
     private String _startDate;
     private String _endDate;
-    private Category _category;
+    private String _category;
 
-    public Item(String id, String itemName, String description, Category category) {
+    public Item(String id, String itemName, String description, String category) {
         _id = id;
         _itemName = itemName;
         _description = description;
@@ -25,7 +25,7 @@ public class Item {
         _fee = fee;
         _startDate = startDate;
         _endDate = endDate;
-      //  _category = Category.fromName(selectedCategory);
+        _category = selectedCategory;
     }
 
     public void setItemName(String itemName) {
@@ -52,12 +52,12 @@ public class Item {
         return _id;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         _category = category;
     }
 
     public String getCategoryName() {
-        return _category != null ? _category.getCategoryName() : null;
+        return _category ;
     }
 
     public void setDescription(String description) {
@@ -75,4 +75,16 @@ public class Item {
     public void setEndDate(String newEndDate) {_endDate = newEndDate;}
 
     public String getEndDate() {return _endDate;}
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("itemName", getItemName());
+        result.put("categoryName", getCategoryName());
+        result.put("description", getDescription());
+        result.put("startDate", getStartDate());
+        result.put("endDate", getEndDate());
+        result.put("fee", getFee());
+        result.put("id", getId());
+        return result;
+    }
 }

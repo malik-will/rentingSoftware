@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -37,12 +38,14 @@ public class LessorPage extends AppCompatActivity {
     List<String> categoriesList = new ArrayList<>();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseRef = database.getReference("categories");
+    DatabaseReference reference;
     Button buttonAddItem;
     EditText editTextName3;
     EditText editTextDescription;
     EditText editTextFee;
     EditText editStartDate;
     EditText editEndDate;
+    Button buttonEditItem;
 
 
 
@@ -57,15 +60,15 @@ public class LessorPage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
 
-
         });
         viewCategories = findViewById(R.id.viewCategories);
-        backToMainPage = findViewById(R.id.backToMainPage);
+        backToMainPage = findViewById(R.id.buttonDelete);
         spinner2 = findViewById(R.id.spinner2);
-        buttonAddItem = findViewById(R.id.buttonAddItem);
+        buttonAddItem = findViewById(R.id.buttonUpdateItem);
+        buttonEditItem = findViewById(R.id.buttonEditItem);
         editTextName3 = findViewById(R.id.editTextName3);
         editTextDescription = findViewById(R.id.editTextDescription);
-        editTextFee = findViewById(R.id.editTextDescription2);
+        editTextFee = findViewById(R.id.editFee);
         editStartDate = findViewById(R.id.editTextDate1);
         editEndDate = findViewById(R.id.editTextDate2);
 
@@ -93,6 +96,23 @@ public class LessorPage extends AppCompatActivity {
             }
         });
 
+        buttonEditItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!validateEntry()){
+                    showToast("NONONONONONo");
+                    return;
+
+                }
+                else{
+
+                    lessorEditor();
+                }
+
+
+            }
+        });
+
         editStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,12 +126,7 @@ public class LessorPage extends AppCompatActivity {
                 pickDate(editEndDate);
             }
         });
-//        editEndDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean b) {
-//                pickDate(editEndDate);
-//            }
-//        });
+
         loadCategory();
     }
 
@@ -141,8 +156,6 @@ public class LessorPage extends AppCompatActivity {
         });
 
     }
-
-
 
 
     private void addItem() {
@@ -184,6 +197,72 @@ public class LessorPage extends AppCompatActivity {
                 }
             }, year, month, day);
         datePickerDialog.show();
+    }
+
+    public boolean validateEntry(){
+        String itemn = editTextName3.getText().toString();
+
+        if(itemn.isEmpty()){
+            editTextName3.setError("Field cannot be empty");
+            return false;
+        }
+        else{
+            editTextName3.setError(null);
+            return true;
+        }
+    }
+    private void lessorEditor(){
+        String item_Entered = editTextName3.getText().toString().trim();
+
+        reference = FirebaseDatabase.getInstance().getReference("categories");
+        Query checkItem = reference.orderByChild("itemName").equalTo(item_Entered);
+
+        checkItem.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    editTextName3.setError(null);
+
+                    for(DataSnapshot itemsnapshot:snapshot.getChildren()){
+                        String itemName = itemsnapshot.child("itemName").getValue(String.class);
+                        if(itemName!=null&&itemName.equals(item_Entered)){
+                            editTextName3.setError(null);
+                            String endDate= itemsnapshot.child("endDate").getValue(String.class);
+                            String startDate=itemsnapshot.child("startDate").getValue(String.class);
+                            String itemDescription=itemsnapshot.child("description").getValue(String.class);
+                            String fee=itemsnapshot.child("fee").getValue(String.class);
+                            String category=itemsnapshot.child("categoryName").getValue(String.class);
+
+                            Intent intent = new Intent(LessorPage.this, LessorEditor.class);
+
+                            intent.putExtra("itemName", itemName);
+                            intent.putExtra("categoryName", category);
+                            intent.putExtra("description", itemDescription);
+                            intent.putExtra("endDate", endDate);
+                            intent.putExtra("startDate", startDate);
+                            intent.putExtra("fee", fee);
+
+                            startActivity(intent);
+
+                        }
+                    }
+                }
+                else{
+                    editTextName3.setError("No such item exists");
+                    editTextName3.requestFocus();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    public void showToast(String message){
+        Toast.makeText(LessorPage.this, message, Toast.LENGTH_SHORT).show();
     }
 
 }

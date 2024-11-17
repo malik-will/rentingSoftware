@@ -52,7 +52,7 @@
                 android:inputType="text" />
 
             <EditText
-                android:id="@+id/editTextDescription2"
+                android:id="@+id/editFee"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:ems="10"
@@ -90,7 +90,7 @@
                 android:layout_height="46dp" />
 
             <Button
-                android:id="@+id/buttonAddItem"
+                android:id="@+id/buttonUpdateItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -103,7 +103,16 @@
                 android:layout_height="61dp" />
 
             <Button
-                android:id="@+id/backToMainPage"
+                android:id="@+id/buttonEditItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Edit Category" />
+
+            <Button
+                android:id="@+id/buttonDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Back to Main Page" />
