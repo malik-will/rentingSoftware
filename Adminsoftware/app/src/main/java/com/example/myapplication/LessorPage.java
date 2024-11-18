@@ -100,7 +100,7 @@ public class LessorPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!validateEntry()){
-                    showToast("NONONONONONo");
+                    showToast("Enter the name of the desired item you wish to edit");
                     return;
 
                 }

@@ -134,9 +134,12 @@ public class LessorEditor extends AppCompatActivity{
 
                                 saveData(id, newitemName,newendDate, newstartDate, newitemDescription,
                                         newfee, newcategory);
-
                             }
                         }
+                        else {
+                            showToast("Enter valid name");
+                        }
+                        startActivity(new Intent(LessorEditor.this, LessorPage.class));
                     }
 
                     @Override
@@ -162,7 +165,7 @@ public class LessorEditor extends AppCompatActivity{
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 LessorEditor.this, new DatePickerDialog.OnDateSetListener() {
             @Override public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                dateField.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                dateField.setText(new StringBuilder().append(dayOfMonth).append("-").append(monthOfYear + 1).append("-").append(year).toString());
             }
         }, year, month, day);
         datePickerDialog.show();
