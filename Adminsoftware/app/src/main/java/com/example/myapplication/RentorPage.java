@@ -23,6 +23,8 @@ import java.util.List;
 public class RentorPage extends AppCompatActivity {
     SearchView searchView;
     ListView listView;
+    ListView listItems;
+    SearchView itemView;
 
 
 
@@ -37,7 +39,9 @@ public class RentorPage extends AppCompatActivity {
             return insets;
         });
         searchView = findViewById(R.id.searchView);
+        itemView = findViewById(R.id.itemSearch);
 
+        listItems = findViewById(R.id.searchItems);
         listView=findViewById(R.id.searchCategories);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -50,6 +54,20 @@ public class RentorPage extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchCategories(newText); // Dynamically update results
+                return false;
+            }
+        });
+
+        itemView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchItems(query); // Fetch results from Firebase
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchItems(newText); // Dynamically update results
                 return false;
             }
         });
@@ -85,6 +103,36 @@ public class RentorPage extends AppCompatActivity {
     }
 
 
+    public void searchItems(String query) {
+        if (query.equals("")){
+            return;
+        }
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("categories");
+        databaseReference.orderByChild("itemName").startAt(query).endAt(query + "\uf8ff")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Item> items = new ArrayList<>();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            String name = data.child("itemName").getValue(String.class);
+                            String desc = data.child("description").getValue(String.class);
+                            String id = data.child("id").getValue(String.class);
+                            String category = data.child("categoryName").getValue(String.class);
+                            String startDate = data.child("startDate").getValue(String.class);
+                            String endDate = data.child("endDate").getValue(String.class);
+                            String fee = data.child("id").getValue(String.class);
+                            Item item = new Item(id,name,desc,fee,startDate,endDate,category);
+                            items.add(item);
+                        }
+                        ItemList itemList = new ItemList(RentorPage.this,items);
+                        listItems.setAdapter(itemList);
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
 
 }
