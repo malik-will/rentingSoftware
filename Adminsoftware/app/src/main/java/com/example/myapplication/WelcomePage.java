@@ -95,7 +95,7 @@ public class WelcomePage extends AppCompatActivity {
             rentorButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(WelcomePage.this,LessorPage.class);
+                    Intent intent = new Intent(WelcomePage.this,RentorPage.class);
                     startActivity(intent);
                 }
             });
