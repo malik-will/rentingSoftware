@@ -123,6 +123,15 @@
                 android:layout_height="wrap_content"
                 android:text="View Categories" />
 
+            <Button
+                android:id="@+id/buttoncheckRequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Rentor Requests" />
+
         </LinearLayout>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

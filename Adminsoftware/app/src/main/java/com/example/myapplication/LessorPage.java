@@ -46,6 +46,7 @@ public class LessorPage extends AppCompatActivity {
     EditText editStartDate;
     EditText editEndDate;
     Button buttonEditItem;
+    Button checkRequest;
 
 
 
@@ -71,6 +72,7 @@ public class LessorPage extends AppCompatActivity {
         editTextFee = findViewById(R.id.editFee);
         editStartDate = findViewById(R.id.editTextDate1);
         editEndDate = findViewById(R.id.editTextDate2);
+        checkRequest = findViewById(R.id.buttoncheckRequest);
 
 
         viewCategories.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +126,14 @@ public class LessorPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 pickDate(editEndDate);
+            }
+        });
+
+        checkRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LessorPage.this, RequestPage.class);
+                startActivity(intent);
             }
         });
 

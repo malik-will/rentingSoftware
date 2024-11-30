@@ -40,7 +40,7 @@
         <ListView
             android:id="@+id/searchCategories"
             android:layout_width="match_parent"
-            android:layout_height="262dp" />
+            android:layout_height="153dp" />
 
         <TextView
             android:id="@+id/textView13"
@@ -57,7 +57,13 @@
         <ListView
             android:id="@+id/searchItems"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="261dp" />
+
+        <Button
+            android:id="@+id/buttonRentedItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rented Items" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

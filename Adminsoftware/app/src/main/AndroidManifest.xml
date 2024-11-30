@@ -33,16 +33,19 @@
         <activity
             android:name=".EditCategory"
             android:exported="false" />
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_login" />
+
         <activity
             android:name=".WelcomePage"
             android:exported="false" />
         <activity
             android:name=".AdminPage"
             android:exported="false" />
+        <activity
+            android:name=".RentedItems"
+            android:exported="true" />
+        <activity
+            android:name=".RequestPage"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

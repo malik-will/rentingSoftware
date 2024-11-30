@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -25,6 +28,7 @@ public class RentorPage extends AppCompatActivity {
     ListView listView;
     ListView listItems;
     SearchView itemView;
+    Button rentedItems;
 
 
 
@@ -43,6 +47,15 @@ public class RentorPage extends AppCompatActivity {
 
         listItems = findViewById(R.id.searchItems);
         listView=findViewById(R.id.searchCategories);
+        rentedItems = findViewById(R.id.buttonRentedItems);
+
+        rentedItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RentorPage.this, RentedItems.class);
+                startActivity(intent);
+            }
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
