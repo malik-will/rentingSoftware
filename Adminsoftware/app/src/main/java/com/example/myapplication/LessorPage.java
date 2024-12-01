@@ -38,6 +38,7 @@ public class LessorPage extends AppCompatActivity {
     List<String> categoriesList = new ArrayList<>();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseRef = database.getReference("categories");
+    DatabaseReference databaseRef2 = database.getReference("items");
     DatabaseReference reference;
     Button buttonAddItem;
     EditText editTextName3;
@@ -184,9 +185,9 @@ public class LessorPage extends AppCompatActivity {
             return;
         }
 
-        String id = databaseRef.push().getKey();
+        String id = databaseRef2.push().getKey();
         Item item = new Item(id, name, description, fee, startDate, endDate, selectedCategory);
-        databaseRef.child(id).setValue(item);
+        databaseRef2.child(id).setValue(item);
         Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show();
         editTextName3.setText("");
         editTextDescription.setText("");
@@ -224,7 +225,7 @@ public class LessorPage extends AppCompatActivity {
     private void lessorEditor(){
         String item_Entered = editTextName3.getText().toString().trim();
 
-        reference = FirebaseDatabase.getInstance().getReference("categories");
+        reference = FirebaseDatabase.getInstance().getReference("items");
         Query checkItem = reference.orderByChild("itemName").equalTo(item_Entered);
 
         checkItem.addListenerForSingleValueEvent(new ValueEventListener() {
