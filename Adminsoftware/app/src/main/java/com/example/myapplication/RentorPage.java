@@ -3,9 +3,11 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -82,6 +84,16 @@ public class RentorPage extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 searchItems(newText); // Dynamically update results
                 return false;
+            }
+        });
+
+        listItems.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Item selectedItem = (Item) listItems.getItemAtPosition(i);
+                selectedItem.requestItem();
+                // Do something with the selected item
+                Toast.makeText(RentorPage.this, "Sent request for " + selectedItem.getItemName(), Toast.LENGTH_SHORT).show();
             }
         });
 

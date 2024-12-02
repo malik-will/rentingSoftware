@@ -11,12 +11,14 @@ public class Item {
     private String _endDate;
     private String _category;
     private String _ownerID;
+    private boolean isReq;
 
     public Item(String id, String itemName, String description, String category) {
         _id = id;
         _itemName = itemName;
         _description = description;
         _category = category;
+        isReq = false;
     }
 
     public Item(String id, String itemName, String description, String fee, String startDate, String endDate, String selectedCategory, String ownerID) {
@@ -28,6 +30,7 @@ public class Item {
         _endDate = endDate;
         _category = selectedCategory;
         _ownerID = ownerID;
+        isReq = false;
     }
     public Item(String id, String itemName, String description, String fee, String startDate, String endDate, String selectedCategory) {
         _id = id;
@@ -37,6 +40,7 @@ public class Item {
         _startDate = startDate;
         _endDate = endDate;
         _category = selectedCategory;
+        isReq = false;
     }
 
 
@@ -97,6 +101,8 @@ public class Item {
     public void setOwnerId(String ownerId) {
         this._ownerID = ownerId;
     }
+
+    public void requestItem() {this.isReq = true;}
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
