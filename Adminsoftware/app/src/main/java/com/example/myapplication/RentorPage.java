@@ -120,7 +120,7 @@ public class RentorPage extends AppCompatActivity {
         if (query.equals("")){
             return;
         }
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("categories");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("items");
         databaseReference.orderByChild("itemName").startAt(query).endAt(query + "\uf8ff")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -133,8 +133,8 @@ public class RentorPage extends AppCompatActivity {
                             String category = data.child("categoryName").getValue(String.class);
                             String startDate = data.child("startDate").getValue(String.class);
                             String endDate = data.child("endDate").getValue(String.class);
-                            String fee = data.child("id").getValue(String.class);
-                            String ownerID = data.child("id").getValue(String.class);
+                            String fee = data.child("fee").getValue(String.class);
+                            String ownerID = data.child("ownerID").getValue(String.class);
                             Item item = new Item(id,name,desc,fee,startDate,endDate,category,ownerID);
                             items.add(item);
                         }
