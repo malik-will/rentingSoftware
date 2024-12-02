@@ -19,6 +19,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class LessorPage extends AppCompatActivity {
 
@@ -176,6 +178,7 @@ public class LessorPage extends AppCompatActivity {
         String fee = editTextFee.getText().toString().trim();
         String startDate = editStartDate.getText().toString().trim();
         String endDate = editEndDate.getText().toString().trim();
+        String ownerID = getOwnerID();
         if (name.isEmpty() || description.isEmpty() || fee.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
@@ -185,8 +188,10 @@ public class LessorPage extends AppCompatActivity {
             return;
         }
 
+
+
         String id = databaseRef2.push().getKey();
-        Item item = new Item(id, name, description, fee, startDate, endDate, selectedCategory);
+        Item item = new Item(id, name, description, fee, startDate, endDate, selectedCategory, ownerID);
         databaseRef2.child(id).setValue(item);
         Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show();
         editTextName3.setText("");
@@ -194,7 +199,15 @@ public class LessorPage extends AppCompatActivity {
         editTextFee.setText("");
         editStartDate.setText("");
         editEndDate.setText("");
+
+
+
     }
+
+    private String getOwnerID() {
+        return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+    }
+
 
     private void pickDate(EditText dateField) {
         Calendar c = Calendar.getInstance();

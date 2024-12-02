@@ -10,6 +10,7 @@ public class Item {
     private String _startDate;
     private String _endDate;
     private String _category;
+    private String _ownerID;
 
     public Item(String id, String itemName, String description, String category) {
         _id = id;
@@ -18,7 +19,7 @@ public class Item {
         _category = category;
     }
 
-    public Item(String id, String itemName, String description, String fee, String startDate, String endDate, String selectedCategory) {
+    public Item(String id, String itemName, String description, String fee, String startDate, String endDate, String selectedCategory, String ownerID) {
         _id = id;
         _itemName = itemName;
         _description = description;
@@ -26,7 +27,10 @@ public class Item {
         _startDate = startDate;
         _endDate = endDate;
         _category = selectedCategory;
+        _ownerID = ownerID;
     }
+
+
 
     public void setItemName(String itemName) {
         _itemName = itemName;
@@ -76,6 +80,14 @@ public class Item {
 
     public String getEndDate() {return _endDate;}
 
+    public String getOwnerId() {
+        return _ownerID;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this._ownerID = ownerId;
+    }
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("itemName", getItemName());
@@ -85,6 +97,7 @@ public class Item {
         result.put("endDate", getEndDate());
         result.put("fee", getFee());
         result.put("id", getId());
+        result.put("ownerID", getOwnerId());
         return result;
     }
 }

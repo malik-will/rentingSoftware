@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class LessorEditor extends AppCompatActivity{
     EditText editStartDate;
@@ -188,26 +190,39 @@ public class LessorEditor extends AppCompatActivity{
 
     public void showItem(){
         Intent intent = getIntent();
+        String ownerId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-        String endDate= intent.getStringExtra("endDate");
-        String startDate=intent.getStringExtra("startDate");
-        String itemDescription=intent.getStringExtra("description");
-        String fee=intent.getStringExtra("fee");
-        String category=intent.getStringExtra("categoryName");
-        String itemName= intent.getStringExtra("itemName");
+        String id = intent.getStringExtra("id");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("items").child(id);
 
-        //int selected = getIndex(category_spin,category);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists() && snapshot.child("ownerId").getValue(String.class).equals(ownerId)) {
+                    String endDate = snapshot.child("endDate").getValue(String.class);
+                    String startDate = snapshot.child("startDate").getValue(String.class);
+                    String itemDescription = snapshot.child("description").getValue(String.class);
+                    String fee = snapshot.child("fee").getValue(String.class);
+                    String category = snapshot.child("categoryName").getValue(String.class);
+                    String itemName = snapshot.child("itemName").getValue(String.class);
 
-        editName.setText(itemName);
-        //category_spin.setSelection(5);
-        editFee.setText(fee);
-        editDescription.setText(itemDescription);
-        editStartDate.setText(startDate);
-        editEndDate.setText(endDate);
+                    editName.setText(itemName);
+                    editFee.setText(fee);
+                    editDescription.setText(itemDescription);
+                    editStartDate.setText(startDate);
+                    editEndDate.setText(endDate);
+                } else {
+                    showToast("Unauthorized access or item not found.");
+                }
+            }
 
-
-
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Failed to fetch item: " + error.getMessage());
+            }
+        });
     }
+
 
     public int getIndex(Spinner spin, String spinVal){
         for(int i=0;i<spin.getCount();i++){
@@ -249,8 +264,10 @@ public class LessorEditor extends AppCompatActivity{
 
     public void saveData(String id, String newitemName,String newendDate, String newstartDate, String newitemDescription,
                          String newfee, String newcategory){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("categories").child(id);
-        Item item = new Item(id, newitemName, newitemDescription, newfee, newstartDate, newendDate, newcategory);
+
+        String ownerId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("items").child(id);
+        Item item = new Item(id, newitemName, newitemDescription, newfee, newstartDate, newendDate, newcategory,ownerId);
         ref.setValue(item.toMap());
         showToast("ITEM UPDATED");
 

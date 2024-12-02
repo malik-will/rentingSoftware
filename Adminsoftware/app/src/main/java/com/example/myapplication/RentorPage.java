@@ -134,7 +134,8 @@ public class RentorPage extends AppCompatActivity {
                             String startDate = data.child("startDate").getValue(String.class);
                             String endDate = data.child("endDate").getValue(String.class);
                             String fee = data.child("id").getValue(String.class);
-                            Item item = new Item(id,name,desc,fee,startDate,endDate,category);
+                            String ownerID = data.child("id").getValue(String.class);
+                            Item item = new Item(id,name,desc,fee,startDate,endDate,category,ownerID);
                             items.add(item);
                         }
                         ItemList itemList = new ItemList(RentorPage.this,items);
