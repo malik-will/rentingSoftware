@@ -43,7 +43,6 @@ public class LessorEditor extends AppCompatActivity{
     Button delete;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
-    //DatabaseReference databaseRef = database.getReference("categories");
     List<String> categoriesList = new ArrayList<>();
     Button backToLessorPage;
     EditText editName;
@@ -59,7 +58,7 @@ public class LessorEditor extends AppCompatActivity{
 
 
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference().child("categories");
+        databaseReference = database.getReference().child("items");
         editStartDate = findViewById(R.id.editTextDate1);
         editEndDate = findViewById(R.id.editTextDate2);
         update = findViewById(R.id.buttonUpdateItem);
@@ -174,7 +173,7 @@ public class LessorEditor extends AppCompatActivity{
     }
 
     private void deleteItem(String id){
-        databaseReference = FirebaseDatabase.getInstance().getReference("categories").child(id);
+        databaseReference = FirebaseDatabase.getInstance().getReference("items").child(id);
         Task<Void> mTask = databaseReference.removeValue();
         mTask.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -188,39 +187,28 @@ public class LessorEditor extends AppCompatActivity{
         Toast.makeText(LessorEditor.this, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void showItem(){
+
+public void showItem(){
         Intent intent = getIntent();
-        String ownerId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-        String id = intent.getStringExtra("id");
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("items").child(id);
+        String endDate= intent.getStringExtra("endDate");
+        String startDate=intent.getStringExtra("startDate");
+        String itemDescription=intent.getStringExtra("description");
+        String fee=intent.getStringExtra("fee");
+        String category=intent.getStringExtra("categoryName");
+        String itemName= intent.getStringExtra("itemName");
 
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists() && snapshot.child("ownerId").getValue(String.class).equals(ownerId)) {
-                    String endDate = snapshot.child("endDate").getValue(String.class);
-                    String startDate = snapshot.child("startDate").getValue(String.class);
-                    String itemDescription = snapshot.child("description").getValue(String.class);
-                    String fee = snapshot.child("fee").getValue(String.class);
-                    String category = snapshot.child("categoryName").getValue(String.class);
-                    String itemName = snapshot.child("itemName").getValue(String.class);
+        //int selected = getIndex(category_spin,category);
 
-                    editName.setText(itemName);
-                    editFee.setText(fee);
-                    editDescription.setText(itemDescription);
-                    editStartDate.setText(startDate);
-                    editEndDate.setText(endDate);
-                } else {
-                    showToast("Unauthorized access or item not found.");
-                }
-            }
+        editName.setText(itemName);
+        //category_spin.setSelection(5);
+        editFee.setText(fee);
+        editDescription.setText(itemDescription);
+        editStartDate.setText(startDate);
+        editEndDate.setText(endDate);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Firebase", "Failed to fetch item: " + error.getMessage());
-            }
-        });
+
+
     }
 
 

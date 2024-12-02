@@ -80,7 +80,7 @@ public class Item {
 
     public String getEndDate() {return _endDate;}
 
-    public String getOwnerId() {
+    public String getOwnerID() {
         return _ownerID;
     }
 
@@ -97,7 +97,9 @@ public class Item {
         result.put("endDate", getEndDate());
         result.put("fee", getFee());
         result.put("id", getId());
-        result.put("ownerID", getOwnerId());
+        result.put("ownerID", getOwnerID());
         return result;
     }
+
+
 }

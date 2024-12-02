@@ -33,7 +33,7 @@ public class ItemList extends ArrayAdapter<Item> {
          TextView category = (TextView) listViewItem.findViewById(R.id.textView17);
 //
 //
-      Item item = items.get(position);
+        Item item = items.get(position);
 //
        name.setText("Name: " + item.getItemName());
         desc.setText("Description: " + item.getDescription());
