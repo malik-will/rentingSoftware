@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.Objects;
 
 public class LessorPage extends AppCompatActivity {
@@ -171,42 +172,33 @@ public class LessorPage extends AppCompatActivity {
     }
 
 
-    private void addItem() {
+    public void addItem() {
         String selectedCategory = spinner2.getSelectedItem().toString();
         String name = editTextName3.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
         String fee = editTextFee.getText().toString().trim();
         String startDate = editStartDate.getText().toString().trim();
         String endDate = editEndDate.getText().toString().trim();
-        String ownerID = getOwnerID();
         if (name.isEmpty() || description.isEmpty() || fee.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (selectedCategory.isEmpty()) {
-            Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
 
         String id = databaseRef2.push().getKey();
-        Item item = new Item(id, name, description, fee, startDate, endDate, selectedCategory, ownerID);
-        databaseRef2.child(id).setValue(item);
+        Item item = new Item(id, name, description, fee, startDate, endDate, selectedCategory);
+        assert id != null;
+        Map<String, Object> itemMap = item.toMap();
+        databaseRef2.child(id).setValue(itemMap);
         Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show();
         editTextName3.setText("");
         editTextDescription.setText("");
         editTextFee.setText("");
         editStartDate.setText("");
         editEndDate.setText("");
-
-
-
+        item.setOwnerId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
     }
 
-    private String getOwnerID() {
-        return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-    }
+
 
 
     private void pickDate(EditText dateField) {

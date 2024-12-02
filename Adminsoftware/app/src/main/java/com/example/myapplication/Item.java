@@ -29,6 +29,16 @@ public class Item {
         _category = selectedCategory;
         _ownerID = ownerID;
     }
+    public Item(String id, String itemName, String description, String fee, String startDate, String endDate, String selectedCategory) {
+        _id = id;
+        _itemName = itemName;
+        _description = description;
+        _fee = fee;
+        _startDate = startDate;
+        _endDate = endDate;
+        _category = selectedCategory;
+    }
+
 
 
 
