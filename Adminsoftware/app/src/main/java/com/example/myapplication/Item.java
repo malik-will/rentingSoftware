@@ -104,6 +104,8 @@ public class Item {
 
     public void requestItem() {this.isReq = true;}
 
+    public boolean isAvailable() {return !isReq;}
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("itemName", getItemName());

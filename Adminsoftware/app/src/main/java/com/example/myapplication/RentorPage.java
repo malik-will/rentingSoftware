@@ -91,9 +91,13 @@ public class RentorPage extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Item selectedItem = (Item) listItems.getItemAtPosition(i);
-                selectedItem.requestItem();
-                // Do something with the selected item
-                Toast.makeText(RentorPage.this, "Sent request for " + selectedItem.getItemName(), Toast.LENGTH_SHORT).show();
+                if (selectedItem.isAvailable()) {
+                    selectedItem.requestItem();
+                    Toast.makeText(RentorPage.this, "Sent request for " + selectedItem.getItemName(), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(RentorPage.this, selectedItem.getItemName() + " has already be requested", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
