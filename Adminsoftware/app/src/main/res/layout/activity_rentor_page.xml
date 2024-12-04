@@ -65,5 +65,11 @@
             android:layout_height="wrap_content"
             android:text="Rented Items" />
 
+        <Button
+            android:id="@+id/browseButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Browse Items" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

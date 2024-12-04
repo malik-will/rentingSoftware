@@ -187,6 +187,7 @@ public class LessorPage extends AppCompatActivity {
         String id = databaseRef2.push().getKey();
         Item item = new Item(id, name, description, fee, startDate, endDate, selectedCategory);
         assert id != null;
+        item.setOwnerId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         Map<String, Object> itemMap = item.toMap();
         databaseRef2.child(id).setValue(itemMap);
         Toast.makeText(this, "Item added successfully", Toast.LENGTH_SHORT).show();
@@ -195,7 +196,7 @@ public class LessorPage extends AppCompatActivity {
         editTextFee.setText("");
         editStartDate.setText("");
         editEndDate.setText("");
-        item.setOwnerId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+
     }
 
 
@@ -238,6 +239,9 @@ public class LessorPage extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     editTextName3.setError(null);
+
+
+
 
                     for(DataSnapshot itemsnapshot:snapshot.getChildren()){
                         String itemName = itemsnapshot.child("itemName").getValue(String.class);
