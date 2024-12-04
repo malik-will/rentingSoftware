@@ -1,40 +1,77 @@
 package com.example.myapplication;
 
-import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
-import android.widget.DatePicker;
 
-import androidx.activity.EdgeToEdge;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 
-import android.os.Bundle;
-
-public class RequestPage extends AppCompatActivity{
-
+public class RequestPage extends AppCompatActivity {
+    RecyclerView recyclerView;
+    DatabaseReference databaseRef;
+    Adapter_Lessor myAdapter;
+    ArrayList<Item> itemList;
+    public String loginIDFetched = Login_page.getLoginID();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lessor_requests_page);
-    }
+        setContentView(R.layout.activity_recyclerview);
 
+
+        recyclerView = findViewById(R.id.itemlist);
+        databaseRef = FirebaseDatabase.getInstance().getReference("items");
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+
+
+
+
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                itemList = new ArrayList<>();
+                for(DataSnapshot data: snapshot.getChildren()){
+                    String ownerID = data.child("ownerID").getValue(String.class);
+
+                    String itemname = data.child("itemName").getValue(String.class);
+                    String description = data.child("description").getValue(String.class);
+                    String id = data.child("id").getValue(String.class);
+                    String startd = data.child("startDate").getValue(String.class);
+                    String endd = data.child("endDate").getValue(String.class);
+                    String categoryName = data.child("categoryName").getValue(String.class);
+                    String fee = data.child("fee").getValue(String.class);
+
+
+                    Item item = new Item(id, itemname, description, fee, startd, endd, categoryName, ownerID);
+                    if(ownerID.equals(loginIDFetched)){
+                    itemList.add(item);}
+
+                }
+                myAdapter = new Adapter_Lessor(RequestPage.this, itemList);
+                recyclerView.setAdapter(myAdapter);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
 
 }
