@@ -33,6 +33,7 @@ public class Login_page extends AppCompatActivity {
     private Button loginbutton;
     private FirebaseUser mUser;
     private DatabaseReference mDatabase;
+    public static String loginID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,7 @@ public class Login_page extends AppCompatActivity {
                         @Override
                         public void onSuccess(AuthResult authResult) {
                             mUser = FirebaseAuth.getInstance().getCurrentUser();
+                            loginID = mUser.getUid();
                             mDatabase= FirebaseDatabase.getInstance().getReference("users").child(mUser.getUid());
                             mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -144,5 +146,9 @@ public class Login_page extends AppCompatActivity {
         });
 
 
+    }
+
+    public static String getLoginID(){
+        return loginID;
     }
 }
