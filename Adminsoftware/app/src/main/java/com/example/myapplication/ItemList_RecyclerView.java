@@ -33,20 +33,32 @@ public class ItemList_RecyclerView extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        itemList = new ArrayList<>();
-        myAdapter = new MyAdapter(this, itemList);
-        recyclerView.setAdapter(myAdapter);
+
+
+
 
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Item item = dataSnapshot.getValue(Item.class);
+                itemList = new ArrayList<>();
+                for(DataSnapshot data: snapshot.getChildren()){
+                    String itemname = data.child("itemName").getValue(String.class);
+                    String description = data.child("description").getValue(String.class);
+                    String id = data.child("id").getValue(String.class);
+                    String startd = data.child("startDate").getValue(String.class);
+                    String endd = data.child("endDate").getValue(String.class);
+                    String categoryName = data.child("categoryName").getValue(String.class);
+                    String fee = data.child("fee").getValue(String.class);
+                    String ownerID = data.child("ownerID").getValue(String.class);
+
+                    Item item = new Item(id, itemname, description, fee, startd, endd, categoryName, ownerID);
                     itemList.add(item);
 
                 }
+                myAdapter = new MyAdapter(ItemList_RecyclerView.this, itemList);
+                recyclerView.setAdapter(myAdapter);
 
-                myAdapter.notifyDataSetChanged();
+
             }
 
             @Override

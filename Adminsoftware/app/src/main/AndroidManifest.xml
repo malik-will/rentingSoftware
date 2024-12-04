@@ -35,6 +35,14 @@
             android:exported="false" />
 
         <activity
+            android:name=".MyAdapter"
+            android:exported="false" />
+
+        <activity
+            android:name=".ItemList_RecyclerView"
+            android:exported="false" />
+
+        <activity
             android:name=".WelcomePage"
             android:exported="false" />
         <activity

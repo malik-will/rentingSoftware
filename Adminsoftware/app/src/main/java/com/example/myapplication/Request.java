@@ -1,57 +1,86 @@
 package com.example.myapplication;
-
 public class Request {
-    private String _requestId;
-    private String _itemId;
-    private String _userId;
-    private String _requestDate;
-    private Boolean _requestStatus;
+    private String itemName;
+    private String description;
+    private String fee;
+    private String startDate;
+    private String endDate;
+    private String categoryName;
+    private String ownerID;
+    private String myID;
 
+    public Request() {}
 
-    public Request(String requestId, String itemId, String userId, String requestDate, Boolean requestStatus) {
-        _requestId = requestId;
-        _itemId = itemId;
-        _userId = userId;
-        _requestDate = requestDate;
-        _requestStatus = requestStatus;
+    public Request(String itemName, String description, String fee, String startDate, String endDate, String categoryName, String ownerID, String myID) {
+        this.itemName = itemName;
+        this.description = description;
+        this.fee = fee;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.categoryName = categoryName;
+        this.ownerID = ownerID;
+        this.myID = myID;
+
     }
 
     // Getters and setters
-    public String get_requestId() {
-        return _requestId;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void set_requestId(String _requestId) {
-        this._requestId = _requestId;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public String get_itemId() {
-        return _itemId;
+    public String getDescription() {
+        return description;
     }
 
-    public void set_itemId(String _itemId) {
-        this._itemId = _itemId;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String get_userId() {
-        return _userId;
+    public String getFee() {
+        return fee;
     }
 
-    public void set_userId(String _userId) {
-        this._userId = _userId;
+    public void setFee(String fee) {
+        this.fee = fee;
     }
 
-    public String get_requestDate() {
-        return _requestDate;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void set_requestDate(String _requestDate) {
-        this._requestDate = _requestDate;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
-    public Boolean get_requestStatus() {
-        return _requestStatus;
+
+    public String getEndDate() {
+        return endDate;
     }
-    public void set_requestStatus(Boolean _requestStatus) {
-        this._requestStatus = _requestStatus;
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+    public String getOwnerID() {
+        return ownerID;
+    }
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
+    }
+    public String getMyID() {
+        return myID;
+        }
+    public void setMyID(String myID) {
+        this.myID = myID;
     }
 }

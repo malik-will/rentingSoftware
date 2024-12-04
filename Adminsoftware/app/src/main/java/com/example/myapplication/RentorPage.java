@@ -3,9 +3,11 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -51,18 +53,18 @@ public class RentorPage extends AppCompatActivity {
         rentedItems = findViewById(R.id.buttonRentedItems);
         browse = findViewById(R.id.browseButton);
 
-        rentedItems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RentorPage.this, RentedItems.class);
-                startActivity(intent);
-            }
-        });
 
         browse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RentorPage.this, ItemList_RecyclerView.class);
+                startActivity(intent);
+            }
+        });
+        rentedItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RentorPage.this, RentedItems.class);
                 startActivity(intent);
             }
         });
@@ -92,6 +94,20 @@ public class RentorPage extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 searchItems(newText); // Dynamically update results
                 return false;
+            }
+        });
+
+        listItems.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Item selectedItem = (Item) listItems.getItemAtPosition(i);
+                if (selectedItem.isAvailable()) {
+                    selectedItem.requestItem();
+                    Toast.makeText(RentorPage.this, "Sent request for " + selectedItem.getItemName(), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(RentorPage.this, selectedItem.getItemName() + " has already be requested", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -130,7 +146,7 @@ public class RentorPage extends AppCompatActivity {
         if (query.equals("")){
             return;
         }
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("categories");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("items");
         databaseReference.orderByChild("itemName").startAt(query).endAt(query + "\uf8ff")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -143,8 +159,8 @@ public class RentorPage extends AppCompatActivity {
                             String category = data.child("categoryName").getValue(String.class);
                             String startDate = data.child("startDate").getValue(String.class);
                             String endDate = data.child("endDate").getValue(String.class);
-                            String fee = data.child("id").getValue(String.class);
-                            String ownerID = data.child("id").getValue(String.class);
+                            String fee = data.child("fee").getValue(String.class);
+                            String ownerID = data.child("ownerID").getValue(String.class);
                             Item item = new Item(id,name,desc,fee,startDate,endDate,category,ownerID);
                             items.add(item);
                         }

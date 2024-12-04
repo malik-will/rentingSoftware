@@ -5,12 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
@@ -39,7 +44,39 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.description.setText(item.getDescription());
         holder.startDate.setText(item.getStartDate());
         holder.endDate.setText(item.getEndDate());
+        String myID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
+        holder.actionButton.setOnClickListener(view -> {
+            sendRequest(item, myID);
+        });
+    }
+
+    private void sendRequest(Item item, String myID) {
+        Request request = new Request(
+                item.getItemName(),
+                item.getDescription(),
+                item.getFee(),
+                item.getStartDate(),
+                item.getEndDate(),
+                item.getCategoryName(),
+                item.getOwnerID(),
+                myID
+        );
+
+        DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("requests");
+
+        String requestId = requestRef.push().getKey();
+        if (requestId != null) {
+            requestRef.child(requestId).setValue(request)
+                    .addOnSuccessListener(unused -> {
+                        Toast.makeText(context, "Request sent successfully!", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(context, "Failed to send request: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(context, "Failed to generate request ID", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -48,7 +85,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView itemName, categoryName, description, fee, startDate, endDate;
+        TextView itemName, categoryName, description, fee, startDate, endDate, actionButton;
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
             itemName = itemView.findViewById(R.id.itemName);
@@ -57,6 +94,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             fee = itemView.findViewById(R.id.fee);
             startDate = itemView.findViewById(R.id.startD);
             endDate = itemView.findViewById(R.id.endD);
+            actionButton = itemView.findViewById(R.id.actionButton);
         }
     }
 }
