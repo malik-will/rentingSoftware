@@ -150,7 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:text="Action"
+            android:text="Request"
             android:backgroundTint="@color/black"
             android:textColor="@color/white"
             android:padding="8dp" />
