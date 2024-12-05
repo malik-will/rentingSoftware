@@ -19,6 +19,15 @@
             android:name=".Adapter_Lessor"
             android:exported="false" />
         <activity
+            android:name=".ItemList_RecyclerViewCat"
+            android:exported="false" />
+        <activity
+            android:name=".Adapter_Category"
+            android:exported="false" />
+        <activity
+            android:name=".RentorCategoryView"
+            android:exported="false" />
+        <activity
             android:name=".CategoryPage"
             android:exported="false" />
         <activity
