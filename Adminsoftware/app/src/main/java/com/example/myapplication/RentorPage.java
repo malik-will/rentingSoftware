@@ -32,6 +32,7 @@ public class RentorPage extends AppCompatActivity {
     SearchView itemView;
     Button rentedItems;
     Button browse;
+    Button browseCategories;
 
 
 
@@ -45,13 +46,13 @@ public class RentorPage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        searchView = findViewById(R.id.searchView);
-        itemView = findViewById(R.id.itemSearch);
 
-        listItems = findViewById(R.id.searchItems);
-        listView=findViewById(R.id.searchCategories);
+
+
+
         rentedItems = findViewById(R.id.buttonRentedItems);
         browse = findViewById(R.id.browseButton);
+        browseCategories = findViewById(R.id.browseCategory);
 
 
         browse.setOnClickListener(new View.OnClickListener() {
@@ -68,48 +69,19 @@ public class RentorPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        browseCategories.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchCategories(query); // Fetch results from Firebase
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                searchCategories(newText); // Dynamically update results
-                return false;
+            public void onClick(View v) {
+                Intent intent = new Intent(RentorPage.this, RentorCategoryView.class);
+                startActivity(intent);
             }
         });
 
-        itemView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchItems(query); // Fetch results from Firebase
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                searchItems(newText); // Dynamically update results
-                return false;
-            }
-        });
 
-        listItems.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Item selectedItem = (Item) listItems.getItemAtPosition(i);
-                if (selectedItem.isAvailable()) {
-                    selectedItem.requestItem();
-                    Toast.makeText(RentorPage.this, "Sent request for " + selectedItem.getItemName(), Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(RentorPage.this, selectedItem.getItemName() + " has already be requested", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+
+
 
 
     }
