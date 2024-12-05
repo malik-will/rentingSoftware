@@ -1,7 +1,5 @@
 package com.example.myapplication;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -30,22 +28,30 @@ public class Adapter_Category extends RecyclerView.Adapter<Adapter_Category.MyVi
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item2,parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.category_item,parent, false);
         return new MyViewHolder(v);
     }
 
+//    @Override
+//    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+//        Category request = categoryList.get(position);
+//        holder.categoryName.setText(request.getCategoryName());
+//        holder.description.setText(request.getDescription());
+//
+//
+//    }
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Category request = categoryList.get(position);
-        holder.itemName.setText(request.getCategoryName());
-        holder.categoryName.setText(request.getDescription());
+        holder.categoryName.setText(request.getCategoryName());
+        holder.description.setText(request.getDescription());
 
         // Use the context from the adapter
         holder.actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Create an intent to navigate to the new activity
-                Intent intent = new Intent(context, ItemList_RecyclerViewCat.class);
+                Intent intent = new Intent(context, RentorCategoryView.class);
 
                 // Optionally pass data to the new activity
                 intent.putExtra("categoryName", request.getCategoryName());
@@ -65,8 +71,7 @@ public class Adapter_Category extends RecyclerView.Adapter<Adapter_Category.MyVi
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView itemName, categoryName, description ;
-        Button actionButton;
+        TextView  categoryName, description, actionButton;
         public MyViewHolder(@NonNull View itemView){
             super(itemView);
             categoryName = itemView.findViewById(R.id.categoryName);
