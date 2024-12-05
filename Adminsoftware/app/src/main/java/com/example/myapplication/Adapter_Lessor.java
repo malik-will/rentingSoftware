@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -22,6 +23,10 @@ public class Adapter_Lessor extends RecyclerView.Adapter<Adapter_Lessor.MyViewHo
     Context context;
 
     ArrayList<Request> requestsList;
+    public int requestID;
+
+
+
 
     public Adapter_Lessor(Context context, ArrayList<Request> requestsList) {
         this.context = context;
@@ -32,6 +37,7 @@ public class Adapter_Lessor extends RecyclerView.Adapter<Adapter_Lessor.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.item2,parent, false);
+
         return new MyViewHolder(v);
     }
 
@@ -48,15 +54,28 @@ public class Adapter_Lessor extends RecyclerView.Adapter<Adapter_Lessor.MyViewHo
     holder.endDate.setText(request.getEndDate());
 
     // Accept button logic
-    holder.acceptButton.setOnClickListener(view -> {
-        updateRequestStatus(request, "accepted", "Request Accepted");
-    });
 
 
+
+        holder.acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateRequestStatus(request, "Accepted", "Request Accepted");
+                requestID = holder.getAdapterPosition();
+                deleteRequest(requestID);
+
+            }
+        });
     // Reject button logic
-    holder.rejectButton.setOnClickListener(view -> {
-        updateRequestStatus(request, "rejected", "Request Rejected");
-    });
+        holder.rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateRequestStatus(request, "rejected", "Request Rejected");
+                requestID = holder.getAdapterPosition();
+                deleteRequest(requestID);
+            }
+        });
+
 }
 
 
@@ -66,6 +85,14 @@ public class Adapter_Lessor extends RecyclerView.Adapter<Adapter_Lessor.MyViewHo
     public int getItemCount() {
         return requestsList.size();
     }
+
+    public void deleteRequest(int ID){
+        requestsList.remove(ID);
+        notifyItemRemoved(ID);
+
+    }
+
+
 
     private void updateRequestStatus(Request request, String newStatus, String toastMessage) {
         DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("requests")
@@ -103,6 +130,8 @@ public class Adapter_Lessor extends RecyclerView.Adapter<Adapter_Lessor.MyViewHo
             endDate = itemView.findViewById(R.id.endD);
             accButton = itemView.findViewById(R.id.acceptButton);
             decButton = itemView.findViewById(R.id.declineButton);
+
+
         }
     }
 }

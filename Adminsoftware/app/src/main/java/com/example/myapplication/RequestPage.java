@@ -38,8 +38,6 @@ public class RequestPage extends AppCompatActivity {
 
 
 
-
-
         databaseRef.orderByChild("ownerID").equalTo(loginIDFetched).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
