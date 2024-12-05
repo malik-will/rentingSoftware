@@ -37,17 +37,28 @@ public class Adapter_Lessor extends RecyclerView.Adapter<Adapter_Lessor.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Request request = requestsList.get(position);
-        holder.itemName.setText(request.getItemName());
-        holder.categoryName.setText(request.getCategoryName());
-        holder.fee.setText(request.getFee());
-        holder.description.setText(request.getDescription());
-        holder.startDate.setText(request.getStartDate());
-        holder.endDate.setText(request.getEndDate());
+    Request request = requestsList.get(position);
+
+    // Bind data to views
+    holder.itemName.setText(request.getItemName());
+    holder.description.setText(request.getDescription());
+    holder.categoryName.setText(request.getCategoryName());
+    holder.fee.setText(request.getFee());
+    holder.startDate.setText(request.getStartDate());
+    holder.endDate.setText(request.getEndDate());
+
+    // Accept button logic
+    holder.acceptButton.setOnClickListener(view -> {
+        updateRequestStatus(request, "accepted", "Request Accepted");
+    });
 
 
+    // Reject button logic
+    holder.rejectButton.setOnClickListener(view -> {
+        updateRequestStatus(request, "rejected", "Request Rejected");
+    });
+}
 
-    }
 
 
 
@@ -56,7 +67,31 @@ public class Adapter_Lessor extends RecyclerView.Adapter<Adapter_Lessor.MyViewHo
         return requestsList.size();
     }
 
+    private void updateRequestStatus(Request request, String newStatus, String toastMessage) {
+        DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("requests")
+                .child(request.getOwnerID())
+                .child(request.getItemName());
+
+        requestRef.child("status").setValue(newStatus)
+                .addOnSuccessListener(unused -> {
+                    for (Request req : requestsList) {
+                        if (req.getItemName().equals(request.getItemName())) {
+                            req.setStatus(newStatus);
+                        }
+                    }
+                    notifyDataSetChanged(); // Refresh UI
+                    Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(context, "Failed to update request: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+
     public static class MyViewHolder extends RecyclerView.ViewHolder{
+        public View acceptButton = itemView.findViewById(R.id.acceptButton);
+        public View rejectButton = itemView.findViewById(R.id.declineButton);
+
         TextView itemName, categoryName, description, fee, startDate, endDate, accButton, decButton;
         public MyViewHolder(@NonNull View itemView){
             super(itemView);

@@ -8,10 +8,11 @@ public class Request {
     private String categoryName;
     private String ownerID;
     private String myID;
+    private String status;
 
     public Request() {}
 
-    public Request(String itemName, String description, String fee, String startDate, String endDate, String categoryName, String ownerID, String myID) {
+    public Request(String itemName, String description, String fee, String startDate, String endDate, String categoryName, String ownerID, String myID, String status){
         this.itemName = itemName;
         this.description = description;
         this.fee = fee;
@@ -20,6 +21,7 @@ public class Request {
         this.categoryName = categoryName;
         this.ownerID = ownerID;
         this.myID = myID;
+        this.status = status;
 
     }
 
@@ -82,5 +84,11 @@ public class Request {
         }
     public void setMyID(String myID) {
         this.myID = myID;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

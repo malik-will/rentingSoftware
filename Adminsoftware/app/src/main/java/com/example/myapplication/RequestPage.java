@@ -57,7 +57,7 @@ public class RequestPage extends AppCompatActivity {
 
 
                     if(ownerID.equals(loginIDFetched)){
-                        Request request = new Request(itemname, description, fee, startd, endd, categoryName, ownerID, myID);
+                        Request request = new Request(itemname, description, fee, startd, endd, categoryName, ownerID, myID,"null");
                         requestsList.add(request);}
 
                 }
