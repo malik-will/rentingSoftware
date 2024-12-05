@@ -52,6 +52,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     private void sendRequest(Item item, String myID) {
+        DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("requests");
+
         Request request = new Request(
                 item.getItemName(),
                 item.getDescription(),
@@ -60,10 +62,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 item.getEndDate(),
                 item.getCategoryName(),
                 item.getOwnerID(),
-                myID
+                myID,
+                "pending"
         );
 
-        DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("requests");
 
         String requestId = requestRef.push().getKey();
         if (requestId != null) {
