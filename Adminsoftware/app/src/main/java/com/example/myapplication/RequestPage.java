@@ -21,15 +21,15 @@ public class RequestPage extends AppCompatActivity {
     RecyclerView recyclerView;
     DatabaseReference databaseRef;
     Adapter_Lessor myAdapter;
-    ArrayList<Item> itemList;
+    ArrayList<Request> requestsList;
     public String loginIDFetched = Login_page.getLoginID();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recyclerview);
+        setContentView(R.layout.requests_recyclerview);
 
 
         recyclerView = findViewById(R.id.itemlist);
-        databaseRef = FirebaseDatabase.getInstance().getReference("items");
+        databaseRef = FirebaseDatabase.getInstance().getReference("requests");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -41,25 +41,25 @@ public class RequestPage extends AppCompatActivity {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                itemList = new ArrayList<>();
+                requestsList = new ArrayList<>();
                 for(DataSnapshot data: snapshot.getChildren()){
                     String ownerID = data.child("ownerID").getValue(String.class);
-
                     String itemname = data.child("itemName").getValue(String.class);
                     String description = data.child("description").getValue(String.class);
-                    String id = data.child("id").getValue(String.class);
                     String startd = data.child("startDate").getValue(String.class);
                     String endd = data.child("endDate").getValue(String.class);
                     String categoryName = data.child("categoryName").getValue(String.class);
                     String fee = data.child("fee").getValue(String.class);
+                    String myID = data.child("myID").getValue(String.class);
 
 
-                    Item item = new Item(id, itemname, description, fee, startd, endd, categoryName, ownerID);
+
                     if(ownerID.equals(loginIDFetched)){
-                    itemList.add(item);}
+                        Request request = new Request(itemname, description, fee, startd, endd, categoryName, ownerID, myID);
+                        requestsList.add(request);}
 
                 }
-                myAdapter = new Adapter_Lessor(RequestPage.this, itemList);
+                myAdapter = new Adapter_Lessor(RequestPage.this, requestsList);
                 recyclerView.setAdapter(myAdapter);
 
 
