@@ -51,7 +51,7 @@ public class Adapter_Category extends RecyclerView.Adapter<Adapter_Category.MyVi
             @Override
             public void onClick(View v) {
                 // Create an intent to navigate to the new activity
-                Intent intent = new Intent(context, RentorCategoryView.class);
+                Intent intent = new Intent(context, ItemList_RecyclerViewCat.class);
 
                 // Optionally pass data to the new activity
                 intent.putExtra("categoryName", request.getCategoryName());
