@@ -16,6 +16,9 @@
             android:name=".RentorPage"
             android:exported="false" />
         <activity
+            android:name=".Adapter_Lessor"
+            android:exported="false" />
+        <activity
             android:name=".CategoryPage"
             android:exported="false" />
         <activity

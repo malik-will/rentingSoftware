@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
-    tool:context=".ItemList_RecyclerView"
+    tool:context=".Adapter_Lessor"
     >
 
     <androidx.recyclerview.widget.RecyclerView
